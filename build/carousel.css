@@ -100,10 +100,11 @@
     .carousel-item:nth-child(20) {
       left: 1900%; }
     .carousel-item-text {
-      padding: 0.75rem;
+      padding: 0.75rem 1.5rem;
       position: absolute;
       width: 100%;
       background: rgba(0, 0, 0, 0.3);
+      color: white;
       bottom: 0; }
       .carousel-item-text * {
         margin: 0; }

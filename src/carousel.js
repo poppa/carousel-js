@@ -1,9 +1,5 @@
 /*
   Author: Pontus Östlund <https://profiles.google.com/poppanator>
-
-  Permission to copy, modify, and distribute this source for any legal
-  purpose granted as long as my name is still attached to it. More
-  specifically, the GPL, LGPL and MPL licenses apply to this software.
 */
 // jshint esversion: 6
 
@@ -97,6 +93,7 @@
 
   window.addEventListener('DOMContentLoaded', (e) => {
     const cs = document.getElementsByClassName('carousel');
+
     if (cs.length) {
       for (let el of cs) {
         new Carousel(el);

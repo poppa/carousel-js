@@ -1,13 +1,18 @@
 /*
   Author: Pontus Östlund <https://profiles.google.com/poppanator>
-
-  Permission to copy, modify, and distribute this source for any legal
-  purpose granted as long as my name is still attached to it. More
-  specifically, the GPL, LGPL and MPL licenses apply to this software.
 */
+
+$site-padding: 3rem;
+$site-width: 1140px;
+$header-bg: #E7445B;
 
 *,*:after, *:before {
   box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -17,30 +22,81 @@ html {
 body {
   font-size: 1.5rem;
   font-family: arial, sans-serif;
+  line-height: 1.4;
+}
+
+header {
+  background: $header-bg;
+  color: white;
+
+  p {
+    margin: 0;
+  }
+
+  .container {
+    padding: $site-padding/2 $site-padding;
+  }
+}
+
+.container,
+header {
+  h1, h2, h3 {
+    margin: 0;
+  }
+
+  a {
+    text-decoration: none;
+    display: inline-block;
+    color: $header-bg;
+    background: #E7E344;
+    padding: 0 4px;
+  }
+}
+
+.site-width {
+  max-width: $site-width;
+  margin: 0 auto;
 }
 
 .container {
   position: relative;
-  max-width: 720px;
   margin: 0 auto;
+  padding: $site-padding;
 
-  .carousel {
+  h2 {
+    margin-bottom: $site-padding/2;
+  }
+
+
+  .outer-jsc {
+    position: relative;
     height: 450px;
+    border: 1px solid #fff;
+    margin: 0 auto;
   }
 
-  &.c500 {
-    max-width: 500px;
+  &.p1 {
+    background-color: #ddddd5;
+  }
 
-    .carousel {
-      height: 370px;
+  &.p2 {
+    background-color: #555;
+    color: #ccc;
+
+    .outer-jsc {
+      max-width: 500px;
+      height: 280px;
     }
   }
 
-  &.full {
-    max-width: 1140px;
+  &.p3 {
+    background-color: #656564;
+    color: #ccc;
 
-    .carousel {
-      height: 350px;
+    .outer-jsc {
+      max-width: 720px;
+      height: 450px;
     }
   }
+
 }

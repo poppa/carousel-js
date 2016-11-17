@@ -2,12 +2,10 @@
   Author: Pontus Östlund <https://profiles.google.com/poppanator>
 */
 
-$debug: false;
-
-$carousel-num-items: 20;
-$carousel-height: 100%;
-$carousel-width: 100%;
-$carousel-text-padding: .75rem;
+$carousel-num-items:    20;
+$carousel-height:       100%;
+$carousel-width:        100%;
+$carousel-text-padding: .75rem 1.5rem;
 
 @mixin carousel-gen-items {
   @for $i from 1 through $carousel-num-items {
@@ -26,25 +24,12 @@ $carousel-text-padding: .75rem;
 }
 
 .carousel {
-  @if $debug == true {
-    outline: 1px solid orange;
-    padding: 2px;
-    overflow: visible;
-  }
-  @else {
-    overflow: hidden;
-  }
-
+  overflow: hidden;
   position: relative;
   width: $carousel-width;
   height: $carousel-height;
 
   &-slider {
-    @if $debug == true {
-      outline: 1px solid magenta;
-      padding: 2px;
-    }
-
     position: relative;
     height: 100%;
     left: 0;
@@ -61,10 +46,6 @@ $carousel-text-padding: .75rem;
     background-size: cover;
     background-position: 50%;
 
-    @if $debug == true {
-      outline: 1px solid blue;
-    }
-
     @include carousel-gen-items;
 
     &-text {
@@ -72,6 +53,7 @@ $carousel-text-padding: .75rem;
       position: absolute;
       width: 100%;
       background: rgba(0, 0, 0, .3);
+      color: white;
       bottom: 0;
 
       * {
