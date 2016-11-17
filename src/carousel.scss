@@ -1,0 +1,82 @@
+/*
+  Author: Pontus Östlund <https://profiles.google.com/poppanator>
+*/
+
+$debug: false;
+
+$carousel-num-items: 20;
+$carousel-height: 100%;
+$carousel-width: 100%;
+$carousel-text-padding: .75rem;
+
+@mixin carousel-gen-items {
+  @for $i from 1 through $carousel-num-items {
+    &:nth-child(#{$i}) {
+      left: #{($i - 1) * 100%}  ;
+    }
+  }
+}
+
+@mixin carousel-gen-pos() {
+  @for $i from 0 through $carousel-num-items - 1 {
+    &[data-carousel-pos='#{$i}'] {
+      left: -#{$i * 100%};
+    }
+  }
+}
+
+.carousel {
+  @if $debug == true {
+    outline: 1px solid orange;
+    padding: 2px;
+    overflow: visible;
+  }
+  @else {
+    overflow: hidden;
+  }
+
+  position: relative;
+  width: $carousel-width;
+  height: $carousel-height;
+
+  &-slider {
+    @if $debug == true {
+      outline: 1px solid magenta;
+      padding: 2px;
+    }
+
+    position: relative;
+    height: 100%;
+    left: 0;
+    transition: left .5s ease-in-out;
+
+    @include carousel-gen-pos;
+  }
+
+  &-item {
+    width:    100%;
+    height:   100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%;
+
+    @if $debug == true {
+      outline: 1px solid blue;
+    }
+
+    @include carousel-gen-items;
+
+    &-text {
+      padding: $carousel-text-padding;
+      position: absolute;
+      width: 100%;
+      background: rgba(0, 0, 0, .3);
+      bottom: 0;
+
+      * {
+        margin: 0;
+      }
+    }
+  }
+}

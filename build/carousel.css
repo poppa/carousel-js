@@ -1,0 +1,109 @@
+@charset "UTF-8";
+/*
+  Author: Pontus Östlund <https://profiles.google.com/poppanator>
+*/
+.carousel {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+  height: 100%; }
+  .carousel-slider {
+    position: relative;
+    height: 100%;
+    left: 0;
+    transition: left .5s ease-in-out; }
+    .carousel-slider[data-carousel-pos='0'] {
+      left: -0%; }
+    .carousel-slider[data-carousel-pos='1'] {
+      left: -100%; }
+    .carousel-slider[data-carousel-pos='2'] {
+      left: -200%; }
+    .carousel-slider[data-carousel-pos='3'] {
+      left: -300%; }
+    .carousel-slider[data-carousel-pos='4'] {
+      left: -400%; }
+    .carousel-slider[data-carousel-pos='5'] {
+      left: -500%; }
+    .carousel-slider[data-carousel-pos='6'] {
+      left: -600%; }
+    .carousel-slider[data-carousel-pos='7'] {
+      left: -700%; }
+    .carousel-slider[data-carousel-pos='8'] {
+      left: -800%; }
+    .carousel-slider[data-carousel-pos='9'] {
+      left: -900%; }
+    .carousel-slider[data-carousel-pos='10'] {
+      left: -1000%; }
+    .carousel-slider[data-carousel-pos='11'] {
+      left: -1100%; }
+    .carousel-slider[data-carousel-pos='12'] {
+      left: -1200%; }
+    .carousel-slider[data-carousel-pos='13'] {
+      left: -1300%; }
+    .carousel-slider[data-carousel-pos='14'] {
+      left: -1400%; }
+    .carousel-slider[data-carousel-pos='15'] {
+      left: -1500%; }
+    .carousel-slider[data-carousel-pos='16'] {
+      left: -1600%; }
+    .carousel-slider[data-carousel-pos='17'] {
+      left: -1700%; }
+    .carousel-slider[data-carousel-pos='18'] {
+      left: -1800%; }
+    .carousel-slider[data-carousel-pos='19'] {
+      left: -1900%; }
+  .carousel-item {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 50%; }
+    .carousel-item:nth-child(1) {
+      left: 0%; }
+    .carousel-item:nth-child(2) {
+      left: 100%; }
+    .carousel-item:nth-child(3) {
+      left: 200%; }
+    .carousel-item:nth-child(4) {
+      left: 300%; }
+    .carousel-item:nth-child(5) {
+      left: 400%; }
+    .carousel-item:nth-child(6) {
+      left: 500%; }
+    .carousel-item:nth-child(7) {
+      left: 600%; }
+    .carousel-item:nth-child(8) {
+      left: 700%; }
+    .carousel-item:nth-child(9) {
+      left: 800%; }
+    .carousel-item:nth-child(10) {
+      left: 900%; }
+    .carousel-item:nth-child(11) {
+      left: 1000%; }
+    .carousel-item:nth-child(12) {
+      left: 1100%; }
+    .carousel-item:nth-child(13) {
+      left: 1200%; }
+    .carousel-item:nth-child(14) {
+      left: 1300%; }
+    .carousel-item:nth-child(15) {
+      left: 1400%; }
+    .carousel-item:nth-child(16) {
+      left: 1500%; }
+    .carousel-item:nth-child(17) {
+      left: 1600%; }
+    .carousel-item:nth-child(18) {
+      left: 1700%; }
+    .carousel-item:nth-child(19) {
+      left: 1800%; }
+    .carousel-item:nth-child(20) {
+      left: 1900%; }
+    .carousel-item-text {
+      padding: 0.75rem;
+      position: absolute;
+      width: 100%;
+      background: rgba(0, 0, 0, 0.3);
+      bottom: 0; }
+      .carousel-item-text * {
+        margin: 0; }
