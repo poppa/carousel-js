@@ -56,7 +56,6 @@
 
     this.img.setAttribute('src', this.src);
     this.img.onload = e => {
-      // window.console.log('Image loaded');
       my.element.style.backgroundImage = 'url(' + my.src + ')';
       my.isLoaded = true;
     };
@@ -81,13 +80,19 @@
     if (this.currPos >= this.items.length) {
       this.currPos = 0;
     }
-    else if (this.currPos + 1 < this.items.length)  {
-      if (!this.items[this.currPos+1].isLoaded) {
-        this.items[this.currPos+1].load();
-      }
+    else {
+      this._loadIfNecessary(this.currPos+1);
     }
 
     this.slider.dataset.carouselPos = this.currPos;
+  };
+
+  Carousel.prototype._loadIfNecessary = function(pos) {
+    if (pos >= 0 && pos < this.items.length) {
+      if (!this.items[pos].isLoaded) {
+        this.items[pos].load();
+      }
+    }
   };
 
 

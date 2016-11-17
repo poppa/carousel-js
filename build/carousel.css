@@ -52,6 +52,46 @@
       left: -1800%; }
     .carousel-slider[data-carousel-pos='19'] {
       left: -1900%; }
+    .carousel-slider[data-carousel-pos='20'] {
+      left: -2000%; }
+    .carousel-slider[data-carousel-pos='21'] {
+      left: -2100%; }
+    .carousel-slider[data-carousel-pos='22'] {
+      left: -2200%; }
+    .carousel-slider[data-carousel-pos='23'] {
+      left: -2300%; }
+    .carousel-slider[data-carousel-pos='24'] {
+      left: -2400%; }
+    .carousel-slider[data-carousel-pos='25'] {
+      left: -2500%; }
+    .carousel-slider[data-carousel-pos='26'] {
+      left: -2600%; }
+    .carousel-slider[data-carousel-pos='27'] {
+      left: -2700%; }
+    .carousel-slider[data-carousel-pos='28'] {
+      left: -2800%; }
+    .carousel-slider[data-carousel-pos='29'] {
+      left: -2900%; }
+    .carousel-slider[data-carousel-pos='30'] {
+      left: -3000%; }
+    .carousel-slider[data-carousel-pos='31'] {
+      left: -3100%; }
+    .carousel-slider[data-carousel-pos='32'] {
+      left: -3200%; }
+    .carousel-slider[data-carousel-pos='33'] {
+      left: -3300%; }
+    .carousel-slider[data-carousel-pos='34'] {
+      left: -3400%; }
+    .carousel-slider[data-carousel-pos='35'] {
+      left: -3500%; }
+    .carousel-slider[data-carousel-pos='36'] {
+      left: -3600%; }
+    .carousel-slider[data-carousel-pos='37'] {
+      left: -3700%; }
+    .carousel-slider[data-carousel-pos='38'] {
+      left: -3800%; }
+    .carousel-slider[data-carousel-pos='39'] {
+      left: -3900%; }
   .carousel-item {
     width: 100%;
     height: 100%;
@@ -99,6 +139,46 @@
       left: 1800%; }
     .carousel-item:nth-child(20) {
       left: 1900%; }
+    .carousel-item:nth-child(21) {
+      left: 2000%; }
+    .carousel-item:nth-child(22) {
+      left: 2100%; }
+    .carousel-item:nth-child(23) {
+      left: 2200%; }
+    .carousel-item:nth-child(24) {
+      left: 2300%; }
+    .carousel-item:nth-child(25) {
+      left: 2400%; }
+    .carousel-item:nth-child(26) {
+      left: 2500%; }
+    .carousel-item:nth-child(27) {
+      left: 2600%; }
+    .carousel-item:nth-child(28) {
+      left: 2700%; }
+    .carousel-item:nth-child(29) {
+      left: 2800%; }
+    .carousel-item:nth-child(30) {
+      left: 2900%; }
+    .carousel-item:nth-child(31) {
+      left: 3000%; }
+    .carousel-item:nth-child(32) {
+      left: 3100%; }
+    .carousel-item:nth-child(33) {
+      left: 3200%; }
+    .carousel-item:nth-child(34) {
+      left: 3300%; }
+    .carousel-item:nth-child(35) {
+      left: 3400%; }
+    .carousel-item:nth-child(36) {
+      left: 3500%; }
+    .carousel-item:nth-child(37) {
+      left: 3600%; }
+    .carousel-item:nth-child(38) {
+      left: 3700%; }
+    .carousel-item:nth-child(39) {
+      left: 3800%; }
+    .carousel-item:nth-child(40) {
+      left: 3900%; }
     .carousel-item-text {
       padding: 0.75rem 1.5rem;
       position: absolute;
