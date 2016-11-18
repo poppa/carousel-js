@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <title>Carousel.js - examples</title>
-    <link rel="stylesheet" href="build/demo.css">
-    <link rel="stylesheet" href="build/carousel.css">
-    <script src="build/carousel.js"></script>
+    <link rel="stylesheet" href="build/demo.min.css">
+    <link rel="stylesheet" href="build/carousel.min.css">
+    <script src="build/carousel.min.js"></script>
   </head>
   <body>
 
@@ -18,7 +18,39 @@
       </div>
     </header>
 
-    <!-- <div class="container intro"></div> -->
+    <!-- <div class='container intro'></div> -->
+    <div class='container intro'><div class='site-width'><h1 id='carousel-js'>Carousel.JS</h1>
+<p>A simple Javascript carousel with no library dependency and lazy image loading.</p>
+<p>This is not a fancy pancy full fledged carousel in any way, and that will never
+be the purpose or goal either. If that&#39;s what you want then check out <a href='http://kenwheeler.github.io/slick/'>Slick</a> instead.</p>
+<h2 id='example'>Example</h2>
+<pre><code>&lt;div class=&quot;my-carousel-wrapper&quot;&gt;
+  &lt;!-- Milliseconds between item rotations --&gt;
+  &lt;div class=&quot;carousel&quot; data-carousel-delay=&quot;8000&quot; data-carousel-indicators=&quot;&quot;&gt;
+    &lt;div class=&quot;carousel-slider&quot;&gt;
+      &lt;!-- Begin item --&gt;
+      &lt;div class=&quot;carousel-item&quot;&gt;
+        &lt;div class=&quot;carousel-item-text&quot;&gt;
+          &lt;h2&gt;Arbitrary...&lt;/h2&gt;
+          &lt;p&gt;...text goes here...&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;img src=&quot;empty-pixel.png&quot; data-carousel-src=&quot;path/to/image.jpg&quot; alt=&quot;...&quot;&gt;
+      &lt;/div&gt;
+
+      &lt;!-- Begin item --&gt;
+      &lt;div class=&quot;carousel-item&quot;&gt;
+        &lt;div class=&quot;carousel-item-text&quot;&gt;
+          &lt;h2&gt;Arbitrary...&lt;/h2&gt;
+          &lt;p&gt;...text goes here...&lt;/p&gt;
+        &lt;/div&gt;
+        &lt;img src=&quot;empty-pixel.png&quot; data-carousel-src=&quot;path/to/image-2.jpg&quot; alt=&quot;...&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+<p><strong>NOTE!</strong> This is just in its infant state and is in no way completed yet!</p>
+</div></div>
 
     <div class="container p1">
       <div class="site-width">
@@ -26,7 +58,7 @@
         <div class="outer-jsc">
 
           <!-- Begin Carousel -->
-          <div class="carousel" data-carousel-delay="5000">
+          <div class="carousel" data-carousel-delay="5000" data-carousel-indicators="">
             <div class="carousel-slider">
               <!-- Begin item -->
               <div class="carousel-item">

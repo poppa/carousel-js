@@ -100,3 +100,22 @@ header {
   }
 
 }
+
+.intro {
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.6rem;
+  }
+}
+
+pre {
+  code {
+    display: block;
+    padding: $site-padding;
+    background: #313138;
+    color: #ccc;
+  }
+}

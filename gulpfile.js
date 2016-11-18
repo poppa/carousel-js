@@ -8,6 +8,8 @@ const
   sass    = require('gulp-sass'),
   plumber = require('gulp-plumber'),
   newer   = require('gulp-newer'),
+  rename  = require('gulp-rename'),
+  uglify  = require('gulp-uglify'),
   babel   = require('gulp-babel');
 
 const doCompress = true;
@@ -23,6 +25,7 @@ gulp.task('sass', () => {
     .pipe(plumber())
     .pipe(newer('build'))
     .pipe(sass(sassOpts).on('error', sass.logError))
+    .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest('build'));
 });
 
@@ -30,7 +33,9 @@ gulp.task('js', [], () => {
   return gulp.src('src/carousel.js')
     .pipe(plumber())
     .pipe(newer('build'))
-    .pipe(babel())
+    .pipe(babel({ presets: ['es2015'] }))
+    .pipe(uglify())
+    .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest('build'));
 });
 
