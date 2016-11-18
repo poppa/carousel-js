@@ -9,33 +9,33 @@
   const werror = window.console.log;
 
   const isTouch = (('ontouchstart' in window)       ||
-                   (navigator.msMaxTouchPoints > 0) ||
-                   (navigator.maxTouchPoints   > 0));
+                   (navigator.maxTouchPoints   > 0) ||
+                   (navigator.msMaxTouchPoints > 0));
 
-  werror('Is touch: ', isTouch);
+  // werror('Is touch: ', isTouch);
 
+  // Helper methods
   const h = (function() {
     return {
       getByClass: function(el, cls, one) {
         const e = el.getElementsByClassName(cls);
+
         if (one && e.length) {
           return e[0];
         }
 
-        if (!e.length) {
-          return undefined;
-        }
-
-        return e;
+        return e.length && e || undefined;
       },
 
       getByTag: function(el, tag, one) {
         const e = el.getElementsByTagName(tag);
+
         if (one) {
           if (e && e.length) {
             return e[0];
           }
         }
+
         return e;
       },
 
@@ -63,13 +63,13 @@
       transition: 'slide'
     };
 
-    this.element    = el;
+    this.element       = el;
     this.useIndicators = el.dataset.carouselIndicators !== undefined;
-    this.indicators = [];
-    this.slider     = h.getByClass(el, 'carousel-slider', true);
-    this.items      = [];
-    this.ivalId     = null;
-    this.currPos    = 0;
+    this.indicators    = [];
+    this.slider        = h.getByClass(el, 'carousel-slider', true);
+    this.items         = [];
+    this.ivalId        = null;
+    this.currPos       = 0;
 
     // werror('Use indicators: ', this.useIndicators);
 
@@ -175,7 +175,7 @@
   };
 
   Carousel.prototype.goto = function(pos) {
-    werror('gotot: ', pos);
+    // werror('gotot: ', pos);
     if (pos < 0 || pos >= this.items.length) {
       return;
     }
