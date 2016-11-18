@@ -10,7 +10,7 @@ const
   newer   = require('gulp-newer'),
   babel   = require('gulp-babel');
 
-const doCompress = false;
+const doCompress = true;
 
 gulp.task('sass', () => {
   const sassOpts = {};

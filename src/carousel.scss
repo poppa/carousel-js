@@ -2,7 +2,7 @@
   Author: Pontus Östlund <https://profiles.google.com/poppanator>
 */
 
-$carousel-num-items:    40;
+$carousel-num-items:    80;
 $carousel-height:       100%;
 $carousel-width:        100%;
 $carousel-text-padding: .75rem 1.5rem;
@@ -26,8 +26,8 @@ $carousel-text-padding: .75rem 1.5rem;
 .carousel {
   overflow: hidden;
   position: relative;
-  width: $carousel-width;
-  height: $carousel-height;
+  width:    $carousel-width;
+  height:   $carousel-height;
 
   &-slider {
     position: relative;
