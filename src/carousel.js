@@ -3,10 +3,16 @@
 */
 // jshint esversion: 6
 
-(function(window) {
+(function(window, document, navigator) {
   'use strict';
 
   const werror = window.console.log;
+
+  const isTouch = (('ontouchstart' in window)       ||
+                   (navigator.msMaxTouchPoints > 0) ||
+                   (navigator.maxTouchPoints   > 0));
+
+  werror('Is touch: ', isTouch);
 
   const h = (function() {
     return {
@@ -46,6 +52,10 @@
       }
     };
   }());
+
+  if (isTouch) {
+    h.getByTag(document, 'html', true).classList.add('carousel-istouch');
+  }
 
   const Carousel = function(el) {
     this.config = {
@@ -90,12 +100,42 @@
   };
 
   Carousel.Item = function(el) {
+    this.mediaQueries = {};
     this.img      = h.getByTag(el, 'img', true);
     this.element  = el;
     this.isLoaded = false;
-    this.src      = this.img.dataset.carouselSrc;
+    this.collectMediaSizes();
+    this.src      = null;
+
+    const keys = Object.keys(this.mediaQueries).sort();
+    let k;
+
+    for (let i = 0; i < keys.length; i++) {
+      k = keys[i];
+
+      if (window.matchMedia(k).matches) {
+        this.src = this.mediaQueries[k];
+        break;
+      }
+    }
+
+    if (!this.src) {
+      this.src = this.img.dataset.carouselSrc;
+    }
 
     this.img.style.display = 'none';
+  };
+
+  Carousel.Item.prototype.collectMediaSizes = function() {
+    let m;
+
+    for (let a in this.img.dataset){
+      m = a.match(/Mq-(\d+)$/);
+
+      if (m) {
+        this.mediaQueries['(max-width: ' + m[1] + 'px)'] = this.img.dataset[a];
+      }
+    }
   };
 
   Carousel.Item.prototype.load = function() {
@@ -168,7 +208,6 @@
 
     if (!ind) {
       ind = h.mkel('div', { class: 'carousel-indicators' });
-      werror('Ind: ', ind);
     }
 
     this.items.forEach(el => {
@@ -185,11 +224,8 @@
 
   Carousel.prototype.setIndicator = function(index) {
     if (!this.useIndicators || this.items.length < 2) {
-      werror('No indicators', this.useIndicators, this.items.length);
       return;
     }
-
-    // werror('Set indicator: ', index);
 
     if (index === undefined) {
       index = this.currPos;
@@ -225,7 +261,7 @@
 
 
   window.addEventListener('DOMContentLoaded', (e) => {
-    const cs = document.getElementsByClassName('carousel');
+    const cs = h.getByClass(document, 'carousel');
 
     if (cs.length) {
       for (let el of cs) {
@@ -234,4 +270,4 @@
     }
   });
 
-}(window));
+}(window, document, window.navigator));

@@ -17,7 +17,10 @@ be the purpose or goal either. If that's what you want then check out [Slick](ht
           <h2>Arbitrary...</h2>
           <p>...text goes here...</p>
         </div>
-        <img src="empty-pixel.png" data-carousel-src="path/to/image.jpg" alt="...">
+        <img src="empty-pixel.png"  alt="..."
+             data-carousel-src="path/to/image.jpg"
+             data-carousel-mq-768="path/to/tablet-image.jpg"
+             data-carousel-mq-414="path/to/mobile-image.jpg">
       </div>
 
       <!-- Begin item -->
@@ -26,7 +29,10 @@ be the purpose or goal either. If that's what you want then check out [Slick](ht
           <h2>Arbitrary...</h2>
           <p>...text goes here...</p>
         </div>
-        <img src="empty-pixel.png" data-carousel-src="path/to/image-2.jpg" alt="...">
+        <img src="empty-pixel.png" alt="..."
+             data-carousel-src="path/to/image-2.jpg"
+             data-carousel-mq-768="path/to/tablet-image-2.jpg"
+             data-carousel-mq-414="path/to/mobile-image-2.jpg">
       </div>
     </div>
   </div>

@@ -34,7 +34,8 @@ header {
   }
 
   .container {
-    padding: $site-padding/2 $site-padding;
+    padding-top: $site-padding/2;
+    padding-bottom: $site-padding/2;
   }
 }
 
@@ -63,6 +64,10 @@ header {
   margin: 0 auto;
   padding: $site-padding;
 
+  @media screen and (max-width: 414px) {
+    padding: $site-padding/2;
+  }
+
   h2 {
     margin-bottom: $site-padding/2;
   }
@@ -90,7 +95,7 @@ header {
   }
 
   &.p3 {
-    background-color: #656564;
+    background-color: #313138;
     color: #ccc;
 
     .outer-jsc {
@@ -112,10 +117,11 @@ header {
 }
 
 pre {
+  padding: $site-padding/2;
+  background: #313138;
+  color: #ccc;
+  overflow: auto;
   code {
     display: block;
-    padding: $site-padding;
-    background: #313138;
-    color: #ccc;
   }
 }
