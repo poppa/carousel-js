@@ -31,7 +31,7 @@ mapping colors = ([
  ]);
 
 mapping modes = ([
-  "default" : ({ 1140, 680 }),
+  "desktop" : ({ 1140, 680 }),
   "tablet"  : ({ 960, 540  }),
   "mobile"  : ({ 420, 600  })
 ]);
@@ -84,7 +84,7 @@ int main(int argc, array(string) argv)
 
       werror("Done!\n");
 
-      // exit(0);
+      // DOS protection ;)
       sleep(1);
 
       i += 1;

@@ -9,6 +9,52 @@
 (function(window, document, navigator) {
   'use strict';
 
+  // Storage for all created carousels.
+  const carousels = [];
+
+  // Storage for match media sizes.
+  const mediaQueries = {};
+
+  // When we get a media match we don't act upon in immediately but only
+  // execute on the last one. This is the interval ids for matches and no
+  // matches. The latter is needed if no media is matched, in which case we
+  // need to set the default media.
+  let mmcival, nomatchival;
+  const onMatchMediaChange = function(e) {
+    werror('media changed: ', e.media);
+    if (e.matches) {
+      // werror('>>> Media change: ', e.media);
+      h.each(carousels, c => {
+        if (c.hasMediaQueries()) {
+          if (mmcival) {
+            clearTimeout(mmcival);
+          }
+
+          if (nomatchival) {
+            clearTimeout(nomatchival);
+          }
+
+          mmcival = setTimeout(() => {
+            // werror('Check media in c: ', c.hasMediaQueries(), e.media);
+            c.changeMedia(e.media);
+          }, 10);
+        }
+      });
+    }
+    else {
+      if (nomatchival) {
+        clearTimeout(nomatchival);
+      }
+      nomatchival = setTimeout(() => {
+        h.each(carousels, c => {
+          if (c.hasMediaQueries()) {
+            c.changeMedia();
+          }
+        });
+      }, 10);
+    }
+  };
+
   const werror = window.console.log;
 
   const isTouch = (('ontouchstart' in window)       ||
@@ -56,8 +102,19 @@
       },
 
       each: (what, cb) => {
+        let cbres;
         for (let i = 0; i < what.length; i++) {
-          cb.call(this, what[i]);
+          cbres = cb.call(this, what[i]);
+          if (cbres === false) {
+            break;
+          }
+        }
+      },
+
+      addMediaQuery: (mq) => {
+        if (!mediaQueries[mq]) {
+          mediaQueries[mq] = true;
+          window.matchMedia(mq).addListener(onMatchMediaChange);
         }
       }
     };
@@ -73,6 +130,8 @@
       transition: 'slide'
     };
 
+    carousels.push(this);
+
     this.element       = el;
     this.useIndicators = el.dataset.carouselIndicators !== undefined;
     this.indicators    = [];
@@ -81,15 +140,13 @@
     this.ivalId        = null;
     this.currPos       = 0;
 
-    // werror('Use indicators: ', this.useIndicators);
+    this._hasmedia     = -1;
 
     let items = h.getByClass(this.slider, 'carousel-item');
 
     h.each(items, el => {
       this.items.push(new Carousel.Item(el));
     });
-
-    // werror('items', this.items);
 
     if (el.dataset.carouselDelay) {
       this.config.delay = parseInt(el.dataset.carouselDelay, 10);
@@ -111,54 +168,6 @@
     this.play();
   };
 
-  Carousel.Item = function(el) {
-    this.mediaQueries = {};
-    this.img      = h.getByTag(el, 'img', true);
-    this.element  = el;
-    this.isLoaded = false;
-    this.collectMediaSizes();
-    this.src      = null;
-
-    const keys = Object.keys(this.mediaQueries).sort();
-    let k;
-
-    for (let i = 0; i < keys.length; i++) {
-      k = keys[i];
-
-      if (window.matchMedia(k).matches) {
-        this.src = this.mediaQueries[k];
-        break;
-      }
-    }
-
-    if (!this.src) {
-      this.src = this.img.dataset.carouselSrc;
-    }
-
-    this.img.style.display = 'none';
-  };
-
-  Carousel.Item.prototype.collectMediaSizes = function() {
-    let m;
-
-    for (let a in this.img.dataset){
-      m = a.match(/Mq-(\d+)$/);
-
-      if (m) {
-        this.mediaQueries['(max-width: ' + m[1] + 'px)'] = this.img.dataset[a];
-      }
-    }
-  };
-
-  Carousel.Item.prototype.load = function() {
-    const my = this;
-
-    this.img.setAttribute('src', this.src);
-    this.img.onload = () => {
-      my.element.style.backgroundImage = 'url(' + my.src + ')';
-      my.isLoaded = true;
-    };
-  };
 
   Carousel.prototype.play = function() {
     if (this.ivalId) {
@@ -187,7 +196,6 @@
   };
 
   Carousel.prototype.goto = function(pos) {
-    // werror('gotot: ', pos);
     if (pos < 0 || pos >= this.items.length) {
       return;
     }
@@ -199,6 +207,33 @@
     this.slider.dataset.carouselPos = pos;
     this.currPos = pos;
     this.play();
+  };
+
+  Carousel.prototype.hasMediaQueries = function() {
+    if (this._hasmedia !== -1) {
+      return !!this._hasmedia;
+    }
+
+    h.each(this.items, item => {
+      if (item.hasMediaQueries) {
+        this._hasmedia = 1;
+        return false;
+      }
+    });
+
+    if (this._hasmedia === -1) {
+      this._hasmedia = 0;
+    }
+
+    return !!this._hasmedia;
+  };
+
+  Carousel.prototype.changeMedia = function(size) {
+    h.each(this.items, item => {
+      if (item.hasMediaQueries) {
+        item.changeMedia(size);
+      }
+    });
   };
 
   Carousel.prototype._loadIfNecessary = function(pos) {
@@ -251,6 +286,91 @@
 
     this.indicators[index].activate();
   };
+
+
+  Carousel.Item = function(el) {
+    this.mediaQueries    = {};
+    this.hasMediaQueries = false;
+    this.img             = h.getByTag(el, 'img', true);
+    this.element         = el;
+    this.isLoaded        = false;
+    this.src             = null;
+    this.defaultSrc      = this.img.dataset.carouselSrc;
+    this.mediaSizes      = null;
+
+    this._collectMediaSizes();
+
+    const keys = Object.keys(this.mediaQueries).sort();
+    let k;
+
+    for (let i = 0; i < keys.length; i++) {
+      k = keys[i];
+
+      if (window.matchMedia(k).matches) {
+        this.src = this.mediaQueries[k];
+      }
+    }
+
+    if (!this.src) {
+      this.src = this.img.dataset.carouselSrc;
+    }
+
+    this.img.style.display = 'none';
+  };
+
+  Carousel.Item.prototype.changeMedia = function(size) {
+    const src = this.mediaQueries[size];
+    this.src = src || this.defaultSrc;
+
+    if (this.isLoaded) {
+      this.load();
+    }
+  };
+
+  Carousel.Item.prototype._collectMediaSizes = function() {
+    let m, sizes = [], sizesrc = {};
+
+    for (let a in this.img.dataset){
+      m = a.match(/Mq-(\d+)$/);
+
+      if (m) {
+        this.hasMediaQueries = true;
+        m = parseInt(m[1]);
+        sizes.push(m);
+        sizesrc[m] = this.img.dataset[a];
+      }
+    }
+
+    let slen = sizes.length;
+
+    if (slen) {
+      let a, str;
+      sizes.sort();
+
+      for (let i = 0; i < slen; i++) {
+        a   = sizes[i];
+        str = `(min-width: ${a+1}px)`;
+
+        this.mediaQueries[str] = sizesrc[a];
+        h.addMediaQuery(str);
+      }
+
+      this.mediaSizes = sizes;
+    }
+  };
+
+  Carousel.Item.prototype.load = function() {
+    this._setSrc(this.src);
+  };
+
+  Carousel.Item.prototype._setSrc = function(src) {
+    this.img.setAttribute('src', src);
+    this.img.onload = () => {
+      this.element.style.backgroundImage = `url(${src})`;
+      this.isLoaded = true;
+    };
+  };
+
 
   Carousel.Indicator = function(owner, index) {
     const _ = this;
