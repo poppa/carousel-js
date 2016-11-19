@@ -1,7 +1,10 @@
 /*
   Author: Pontus Östlund <https://profiles.google.com/poppanator>
 */
-// jshint esversion: 6
+
+// jshint esversion: 6, undef: true, unused: true
+/* global window, document, setTimeout, clearTimeout */
+
 
 (function(window, document, navigator) {
   'use strict';
@@ -43,12 +46,19 @@
         var e = document.createElement(tag);
 
         if (attr) {
-          for (const k of Object.keys(attr)) {
-            e.setAttribute(k, attr[k]);
+          const keys = Object.keys(attr);
+          for (let i = 0; i < keys.length; i++) {
+            e.setAttribute(keys[i], attr[keys[i]]);
           }
         }
 
         return e;
+      },
+
+      each: (what, cb) => {
+        for (let i = 0; i < what.length; i++) {
+          cb.call(this, what[i]);
+        }
       }
     };
   }());
@@ -75,9 +85,11 @@
 
     let items = h.getByClass(this.slider, 'carousel-item');
 
-    for (let i of items) {
-      this.items.push(new Carousel.Item(i));
-    }
+    h.each(items, el => {
+      this.items.push(new Carousel.Item(el));
+    });
+
+    // werror('items', this.items);
 
     if (el.dataset.carouselDelay) {
       this.config.delay = parseInt(el.dataset.carouselDelay, 10);
@@ -142,7 +154,7 @@
     const my = this;
 
     this.img.setAttribute('src', this.src);
-    this.img.onload = e => {
+    this.img.onload = () => {
       my.element.style.backgroundImage = 'url(' + my.src + ')';
       my.isLoaded = true;
     };
@@ -210,7 +222,7 @@
       ind = h.mkel('div', { class: 'carousel-indicators' });
     }
 
-    this.items.forEach(el => {
+    this.items.forEach(() => {
       const i = new Carousel.Indicator(this, inds.length);
       ind.appendChild(i.btn);
       inds.push(i);
@@ -246,7 +258,7 @@
     this.owner = owner;
     this.btn = h.mkel('a', { class: 'carousel-indicator'});
     this.btn.appendChild(h.mkel('span', { class: 'carousel-indicator-inner' }));
-    this.btn.addEventListener('click', e => {
+    this.btn.addEventListener('click', () => {
       _.owner.goto(_.index);
     }, true);
   };
@@ -259,14 +271,13 @@
     this.btn.classList.remove('carousel-indicator-active');
   };
 
-
-  window.addEventListener('DOMContentLoaded', (e) => {
+  window.addEventListener('DOMContentLoaded', () => {
     const cs = h.getByClass(document, 'carousel');
 
     if (cs.length) {
-      for (let el of cs) {
+      h.each(cs, el => {
         new Carousel(el);
-      }
+      });
     }
   });
 
