@@ -152,8 +152,9 @@
 
     let items = h.getByClass(this.slider, 'carousel-item');
 
+    let pos = 0;
     h.each(items, el => {
-      this.items.push(new Carousel.Item(el));
+      this.items.push(new Carousel.Item(el, pos++));
     });
 
     if (el.dataset.carouselDelay) {
@@ -173,6 +174,10 @@
       this._makeIndicators();
     }
 
+    if (isTouch) {
+      this._setupTouchEvents();
+    }
+
     this.play();
   };
 
@@ -188,6 +193,10 @@
       my.next();
       my.play();
     }, this.config.delay);
+  };
+
+  Carousel.prototype.pause = function() {
+    clearTimeout(this.ivalId);
   };
 
   Carousel.prototype.next = function() {
@@ -254,6 +263,67 @@
   };
 
 
+  Carousel.prototype._setupTouchEvents = function() {
+    const x = {
+      x: 0,
+      y: 0
+    };
+
+    const getEvent = function(e) {
+      return e.changedTouches[0];
+    };
+
+    this.slider.addEventListener('touchstart', (e) => {
+      const te = getEvent(e);
+      x.x = te.clientX;
+      x.y = te.clientY;
+      // this.element.classList.add('carousel-draggable');
+      this.pause();
+    }, false);
+
+    this.slider.addEventListener('touchend', (e) => {
+      const te = getEvent(e);
+      let next;
+
+      if (te.clientX < x.x) {
+        next = this.currPos + 1;
+        if (next >= this.items.length) {
+          next = 0;
+        }
+      }
+      else if (te.clientX > x.x) {
+        next = this.currPos - 1;
+        if (next < 0) {
+          next = this.items.length - 1;
+        }
+      }
+
+      if (next !== undefined) {
+        this.slider.style.removeProperty('left');
+        this.goto(next);
+      }
+      else {
+        this.play();
+      }
+
+      // this.element.classList.remove('carousel-draggable');
+    }, false);
+
+    this.slider.addEventListener('touchcancel', (e) => {
+      this.slider.style.removeProperty('left');
+      this.goto(this.currPos);
+    }, false);
+
+    this.slider.addEventListener('touchmove', e => {
+      const te = getEvent(e);
+      const diff = te.clientX - x.x;
+      const left = this.slider.offsetLeft;
+      // werror('x; ', diff, left + diff, 'px');
+      this.slider.style.left = Math.round(left + diff) + 'px';
+      // werror('touchmove:', e, diff);
+    }, false);
+  };
+
   Carousel.prototype._makeIndicators = function() {
     if (!this.useIndicators || this.items.length < 2) {
       return;
@@ -297,7 +367,7 @@
   };
 
 
-  Carousel.Item = function(el) {
+  Carousel.Item = function(el, pos) {
     this.mediaQueries    = {};
     this.hasMediaQueries = false;
     this.img             = h.getByTag(el, 'img', true);
@@ -307,6 +377,9 @@
     this.defaultSrc      = this.img.dataset.carouselSrc;
     this.mediaSizes      = null;
     this.href            = el.dataset.carouselHref;
+    this.position        = pos;
+
+    this.element.setAttribute('data-carousel-position', pos);
 
     if (this.href) {
       el.addEventListener('click', (e) => {
