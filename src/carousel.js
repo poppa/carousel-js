@@ -214,8 +214,15 @@
   };
 
   Carousel.prototype.goto = function(pos) {
-    if (pos < 0 || pos >= this.items.length) {
-      return;
+    // if (pos < 0 || pos >= this.items.length) {
+    //   return;
+    // }
+
+    if (pos < 0) {
+      pos = this.items.length - 1;
+    }
+    else if (pos >= this.items.length) {
+      pos = 0;
     }
 
     clearTimeout(this.ivalId);
@@ -270,70 +277,105 @@
       y: 0
     };
 
+    const _ = this;
+
     const getEvent = function(e) {
       return e.changedTouches[0];
     };
 
-    this.slider.addEventListener('touchstart', e => {
+    const slider = this.slider;
+
+    let abort = false;
+
+    slider.addEventListener('touchstart', e => {
       const te = getEvent(e);
       x.x = te.clientX;
       x.y = te.clientY;
-      this.pause();
+      _.pause();
     }, false);
 
-    this.slider.addEventListener('touchend', e => {
+    slider.addEventListener('touchend', e => {
+      if (abort) {
+        abort = false;
+        return;
+      }
+
       const te = getEvent(e);
       let next;
       let diff = te.clientX - x.x;
 
-      if (Math.abs(diff) < this.config.touchthreshold) {
-        this.slider.style.removeProperty('left');
+      if (Math.abs(diff) < _.config.touchthreshold) {
+        slider.style.removeProperty('left');
         return;
       }
 
       if (te.clientX < x.x) {
-        next = this.currPos + 1;
-        if (next >= this.items.length) {
+        next = _.currPos + 1;
+        if (next >= _.items.length) {
           next = 0;
         }
       }
       else if (te.clientX > x.x) {
-        next = this.currPos - 1;
+        next = _.currPos - 1;
         if (next < 0) {
-          next = this.items.length - 1;
+          next = _.items.length - 1;
         }
       }
 
       if (next !== undefined) {
-        this.slider.style.removeProperty('left');
-        this.goto(next);
+        slider.style.removeProperty('left');
+        _.goto(next);
       }
       else {
-        this.play();
+        _.play();
       }
     }, false);
 
-    this.slider.addEventListener('touchcancel', () => {
-      this.slider.style.removeProperty('left');
-      this.goto(this.currPos);
+    slider.addEventListener('touchcancel', () => {
+      // werror('Touch cancel..');
+      slider.style.removeProperty('left');
+      _.goto(_.currPos);
     }, false);
 
-    this.slider.addEventListener('touchmove', e => {
-      const te = getEvent(e);
+    const touchMove = (e) => {
+      const te   = getEvent(e);
       const diff = te.clientX - x.x;
-      const left = this.slider.offsetLeft;
+      const left = slider.offsetLeft;
 
-      if (Math.abs(diff) > this.config.touchthreshold) {
+      if (Math.abs(diff) > _.config.touchthreshold) {
+        e.preventDefault();
+        abort = true;
+
+        slider.style.removeProperty('left');
+        slider.removeEventListener('touchmove', touchMove, false);
+
         if (diff > 0) {
-          this._loadIfNecessary(this.currPos-1);
+          _._loadIfNecessary(_.currPos-1);
+          _.goto(_.currPos-1);
         }
         else if (diff < 0) {
-          this._loadIfNecessary(this.currPos+1);
+          _._loadIfNecessary(_.currPos+1);
+          _.goto(_.currPos+1);
         }
+
+        setTimeout(() => {
+          setTouchMove();
+        }, 600);
+
+
+        return false;
       }
 
-      this.slider.style.left = Math.round(left + diff) + 'px';
-    }, false);
+      // werror('Move: ', diff);
+
+      slider.style.left = Math.round(left + diff) + 'px';
+    };
+
+    const setTouchMove = () => {
+      slider.addEventListener('touchmove', touchMove, false);
+    };
+
+    setTouchMove();
   };
 
   Carousel.prototype._makeIndicators = function() {
