@@ -22,7 +22,7 @@
   let mmcival, nomatchival;
   const onMatchMediaChange = function(e) {
     if (e.matches) {
-      werror('>>> Media change: ', e.media);
+      // werror('>>> Media change: ', e.media);
       h.each(carousels, c => {
         if (c.hasMediaQueries()) {
           if (mmcival) {
@@ -135,7 +135,8 @@
   const Carousel = function(el) {
     this.config = {
       delay: 8000,
-      transition: 'slide'
+      transition: 'slide',
+      touchthreshold: 40
     };
 
     carousels.push(this);
@@ -246,7 +247,7 @@
   };
 
   Carousel.prototype.changeMedia = function(size) {
-    werror('Carousel.changeMedia(', size, ')');
+    // werror('Carousel.changeMedia(', size, ')');
     h.each(this.items, item => {
       if (item.hasMediaQueries) {
         item.changeMedia(size);
@@ -273,17 +274,22 @@
       return e.changedTouches[0];
     };
 
-    this.slider.addEventListener('touchstart', (e) => {
+    this.slider.addEventListener('touchstart', e => {
       const te = getEvent(e);
       x.x = te.clientX;
       x.y = te.clientY;
-      // this.element.classList.add('carousel-draggable');
       this.pause();
     }, false);
 
-    this.slider.addEventListener('touchend', (e) => {
+    this.slider.addEventListener('touchend', e => {
       const te = getEvent(e);
       let next;
+      let diff = te.clientX - x.x;
+
+      if (Math.abs(diff) < this.config.touchthreshold) {
+        this.slider.style.removeProperty('left');
+        return;
+      }
 
       if (te.clientX < x.x) {
         next = this.currPos + 1;
@@ -305,11 +311,9 @@
       else {
         this.play();
       }
-
-      // this.element.classList.remove('carousel-draggable');
     }, false);
 
-    this.slider.addEventListener('touchcancel', (e) => {
+    this.slider.addEventListener('touchcancel', () => {
       this.slider.style.removeProperty('left');
       this.goto(this.currPos);
     }, false);
@@ -318,9 +322,17 @@
       const te = getEvent(e);
       const diff = te.clientX - x.x;
       const left = this.slider.offsetLeft;
-      // werror('x; ', diff, left + diff, 'px');
+
+      if (Math.abs(diff) > this.config.touchthreshold) {
+        if (diff > 0) {
+          this._loadIfNecessary(this.currPos-1);
+        }
+        else if (diff < 0) {
+          this._loadIfNecessary(this.currPos+1);
+        }
+      }
+
       this.slider.style.left = Math.round(left + diff) + 'px';
-      // werror('touchmove:', e, diff);
     }, false);
   };
 
