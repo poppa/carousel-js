@@ -47,6 +47,10 @@ $carousel-indicator-size: 12px;
     background-size: cover;
     background-position: 50%;
 
+    &[data-carousel-href] {
+      cursor: pointer;
+    }
+
     @include carousel-gen-items;
 
     &-text {

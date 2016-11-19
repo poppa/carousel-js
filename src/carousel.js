@@ -21,9 +21,8 @@
   // need to set the default media.
   let mmcival, nomatchival;
   const onMatchMediaChange = function(e) {
-    werror('media changed: ', e.media);
     if (e.matches) {
-      // werror('>>> Media change: ', e.media);
+      werror('>>> Media change: ', e.media);
       h.each(carousels, c => {
         if (c.hasMediaQueries()) {
           if (mmcival) {
@@ -35,13 +34,14 @@
           }
 
           mmcival = setTimeout(() => {
-            // werror('Check media in c: ', c.hasMediaQueries(), e.media);
             c.changeMedia(e.media);
+            mmcival = null;
+            nomatchival = null;
           }, 10);
         }
       });
     }
-    else {
+    else if (!mmcival) {
       if (nomatchival) {
         clearTimeout(nomatchival);
       }
@@ -51,6 +51,8 @@
             c.changeMedia();
           }
         });
+        mmcival = null;
+        nomatchival = null;
       }, 10);
     }
   };
@@ -66,6 +68,7 @@
   // Helper methods
   const h = (function() {
     return {
+      // Get elements by class name
       getByClass: function(el, cls, one) {
         const e = el.getElementsByClassName(cls);
 
@@ -76,6 +79,7 @@
         return e.length && e || undefined;
       },
 
+      // Get elements by tag name
       getByTag: function(el, tag, one) {
         const e = el.getElementsByTagName(tag);
 
@@ -88,6 +92,7 @@
         return e;
       },
 
+      // Create element
       mkel: function(tag, attr) {
         var e = document.createElement(tag);
 
@@ -101,6 +106,8 @@
         return e;
       },
 
+      // Iterate over what and call cb on each iteration. If cb returns
+      // false the loop is escaped.
       each: (what, cb) => {
         let cbres;
         for (let i = 0; i < what.length; i++) {
@@ -111,6 +118,7 @@
         }
       },
 
+      // Add media query to check in window.matchMedia
       addMediaQuery: (mq) => {
         if (!mediaQueries[mq]) {
           mediaQueries[mq] = true;
@@ -229,6 +237,7 @@
   };
 
   Carousel.prototype.changeMedia = function(size) {
+    werror('Carousel.changeMedia(', size, ')');
     h.each(this.items, item => {
       if (item.hasMediaQueries) {
         item.changeMedia(size);
@@ -297,6 +306,14 @@
     this.src             = null;
     this.defaultSrc      = this.img.dataset.carouselSrc;
     this.mediaSizes      = null;
+    this.href            = el.dataset.carouselHref;
+
+    if (this.href) {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        document.location.href = this.href;
+      }, true);
+    }
 
     this._collectMediaSizes();
 
@@ -376,10 +393,12 @@
     const _ = this;
     this.index = index;
     this.owner = owner;
-    this.btn = h.mkel('a', { class: 'carousel-indicator'});
+    this.btn = h.mkel('a', { class: 'carousel-indicator', href: '#carousel-' + index });
     this.btn.appendChild(h.mkel('span', { class: 'carousel-indicator-inner' }));
-    this.btn.addEventListener('click', () => {
+    this.btn.addEventListener('click', (e) => {
+      e.preventDefault();
       _.owner.goto(_.index);
+      return false;
     }, true);
   };
 
