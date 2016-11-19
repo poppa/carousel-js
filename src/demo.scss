@@ -116,13 +116,50 @@ header {
   }
 }
 
+code {
+  font-size: 14px;
+}
+
 pre {
   padding: $site-padding/2;
   background: #313138;
   color: #ccc;
   overflow: auto;
-  font-size: 14px;
+
   code {
     display: block;
   }
+}
+
+table {
+  width: 100%;
+  margin-bottom: $site-padding;
+}
+
+th {
+  text-align: left;
+}
+
+th, td {
+  padding: $site-padding/3;
+}
+
+thead {
+  th {
+    border-top: 2px solid #ccc;
+    border-bottom: 2px solid #ccc;
+  }
+}
+
+tbody {
+  td {
+    border-bottom: 1px solid #eee;
+  }
+}
+
+hr {
+  height: 1px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px dashed #ccc;
 }

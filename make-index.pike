@@ -2,7 +2,8 @@
 int main(int argc, array(string) argv)
 {
   string readme = Stdio.read_file(combine_path(__DIR__, "README.md"));
-  readme = Tools.Markdown.parse(readme);
+
+  readme = Tools.Markdown.parse(readme, ([ "newline" : false ]));
 
   Parser.HTML p = Parser.HTML();
   p->add_container("div", lambda (Parser.HTML pp, mapping a, string c) {

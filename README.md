@@ -4,7 +4,19 @@ A simple Javascript carousel with no library dependency and lazy image loading.
 This is not a fancy pancy full fledged carousel in any way, and that will never
 be the purpose or goal either. If that's what you want then check out [Slick](http://kenwheeler.github.io/slick/) instead.
 
-## Example
+---
+
+The size of the carousel is determined by the size of its outer container.
+
+| Element/CSS class   | Attribute                  | Description | Example |
+| ------------------- | -------------------------- | ----------- | ------- |
+| `carousel`          | `data-carousel-delay`      | Delay in milliseconds between rotations | 8000 |
+| ...                 | `data-carousel-indicators` | Add indicators | No value |
+| `carousel-item`     | `data-carousel-href`       | Make the item clickable | http://pike.lysator.liu.se |
+| `<img>`             | `data-carousel-src`        | Source of default image | `/img/image-1.jpg` |
+| ...                 | `data-carousel-mq-(**n**)` | Alternative image source. **`n`** is a breakpoint for when the alternative image should be shown. | `data-carousel-mq-414='tablet-image.jpg'` |
+
+## Example/Boilerplate
 
 ```
 <div class="my-carousel-wrapper">
@@ -18,9 +30,9 @@ be the purpose or goal either. If that's what you want then check out [Slick](ht
           <p>...text goes here...</p>
         </div>
         <img src="empty-pixel.png"  alt="..."
-             data-carousel-src="path/to/image.jpg"
-             data-carousel-mq-768="path/to/tablet-image.jpg"
-             data-carousel-mq-414="path/to/mobile-image.jpg">
+             data-carousel-src="path/to/mobile-image.jpg"
+             data-carousel-mq-768="path/to/desktop-image.jpg"
+             data-carousel-mq-414="path/to/tablet-image.jpg">
       </div>
 
       <!-- Begin item -->
@@ -30,13 +42,11 @@ be the purpose or goal either. If that's what you want then check out [Slick](ht
           <p>...text goes here...</p>
         </div>
         <img src="empty-pixel.png" alt="..."
-             data-carousel-src="path/to/image-2.jpg"
-             data-carousel-mq-768="path/to/tablet-image-2.jpg"
-             data-carousel-mq-414="path/to/mobile-image-2.jpg">
+             data-carousel-src="path/to/mobile-image-2.jpg"
+             data-carousel-mq-768="path/to/desktop-image-2.jpg"
+             data-carousel-mq-414="path/to/tablet-image-2.jpg">
       </div>
     </div>
   </div>
 </div>
 ```
-
-**NOTE!** This is just in its infant state and is in no way completed yet!
