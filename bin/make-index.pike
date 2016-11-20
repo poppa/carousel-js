@@ -118,11 +118,19 @@ string make_src_tab(array(Token) parts, string src)
   string tab3;
 
   if (css) {
+    mapping rep = ([
+      "class='lang-" : "class='",
+      " type=&quot;text/x-example&quot;" : ""
+    ]);
     string csscode = src[css->start_pos..css->last_pos-1];
-    string csscode_md = "```css" + unindent(csscode) + "```";
+    csscode = replace(unindent(csscode), ([
+      "<style type=\"text/x-example\">\n" : "",
+      "\n</style>" : ""
+    ]));
+
+    string csscode_md = "```css" + csscode + "```";
     csscode_md = Tools.Markdown.parse(csscode_md, md_args);
-    csscode_md = replace(csscode_md, "class='lang-", "class='");
-    csscode_md = replace(csscode_md, " type=&quot;text/x-example&quot;", "");
+    csscode_md = replace(csscode_md, rep);
 
     tab3 = #"
     <div aria-labelledby='tab-css-" + ntabs + #"'

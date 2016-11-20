@@ -44,7 +44,7 @@ gulp.task('site-js', [], () => {
     .pipe(plumber())
     .pipe(newer('site/build'))
     .pipe(babel({ presets: ['es2015'] }))
-    // .pipe(uglify())
+    .pipe(uglify())
     .pipe(rename({ suffix: '.min' }))
     .pipe(gulp.dest('site/build'));
 });

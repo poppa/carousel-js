@@ -35,7 +35,7 @@
 be the purpose or goal either. If that&#39;s what you want then check out <a href='http://kenwheeler.github.io/slick/'>Slick</a> instead.</p><h2 id='howto'>Howto</h2><p>The size of the carousel is determined by the size of its outer container.</p><div class='scrollable'><table><thead><tr><th>Element/CSS class </th><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>carousel</code> </td><td><code>data-carousel-delay</code> </td><td>Delay in milliseconds between rotations </td><td>8000</td></tr><tr><td>... </td><td><code>data-carousel-indicators</code> </td><td>Add indicators </td><td>No value</td></tr><tr><td><code>carousel-item</code> </td><td><code>data-carousel-href</code> </td><td>Make the item clickable </td><td><a href='http://pike.lysator.liu.se'>http://pike.lysator.liu.se</a></td></tr><tr><td><code>&lt;img&gt;</code> </td><td><code>data-carousel-src</code> </td><td>Source of default image </td><td><code>/img/image-1.jpg</code></td></tr><tr><td>... </td><td><code>data-carousel-mq-(n)</code> </td><td>Alternative image source. <strong><code>(n)</code></strong> is a breakpoint for when the alternative image should be shown. </td><td><code>data-carousel-mq-414=&#39;tablet-image.jpg&#39;</code></td></tr></tbody></table></div></div></div>
     <div class="container p1">
       <div class="site-width">
-        <h2>Full width</h2>
+        <h2>Full width fixed height</h2>
         
     <ul role='tablist'>
       <li class='active'>
@@ -251,14 +251,12 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
 &lt;/div&gt;</code></pre></div>
     <div aria-labelledby='tab-css-1'
        id='tab-view-css-1'
-       role='tabpanel' aria-hidden='true'><pre><code class='css'>&lt;style&gt;
-.outer-jsc {
+       role='tabpanel' aria-hidden='true'><pre><code class='css'>.outer-jsc {
   position: relative;
   height: 450px;
   border: 1px solid #fff;
   margin: 0 auto;
-}
-&lt;/style&gt;</code></pre></div>
+}</code></pre></div>
       </div>
     </div>
 
@@ -274,7 +272,8 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
     <!-- endcatch -->
     <div class="container p2">
       <div class="site-width">
-        <h2>Carousel 500</h2>
+        <h2>Variable width, height and font size</h2>
+        <p>Various dynamic metrics with some media directives.</p>
         
     <ul role='tablist'>
       <li class='active'>
@@ -370,32 +369,66 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
 &lt;/div&gt;</code></pre></div>
     <div aria-labelledby='tab-css-2'
        id='tab-view-css-2'
-       role='tabpanel' aria-hidden='true'><pre><code class='css'>&lt;style&gt;
+       role='tabpanel' aria-hidden='true'><pre><code class='css'>/* SCSS */
 .outer-jsc {
   position: relative;
   border: 1px solid #fff;
   margin: 0 auto;
-  max-width: 500px;
-  height: 280px;
+  width: 50vw;
+  height: 30vw;
+  max-width: 900px;
+  max-height: 400px;
+
+  @media screen and (max-width: 767px) {
+    width: 100%;
+    height: 50vw;
+  }
 }
-&lt;/style&gt;</code></pre></div>
+
+.carousel-item-text {
+  h3 { font-size: 2.4vw; }
+  p { font-size: 1.6vw; }
+
+  @media screen and (max-width: 767px) {
+    h3 { font-size: 1.8rem; }
+    p { font-size: 1.4rem; }
+  }
+}</code></pre></div>
       </div>
     </div>
 
     <!-- catch(css) -->
     <style type="text/x-example">
+    /* SCSS */
     .outer-jsc {
       position: relative;
       border: 1px solid #fff;
       margin: 0 auto;
-      max-width: 500px;
-      height: 280px;
+      width: 50vw;
+      height: 30vw;
+      max-width: 900px;
+      max-height: 400px;
+
+      @media screen and (max-width: 767px) {
+        width: 100%;
+        height: 50vw;
+      }
+    }
+
+    .carousel-item-text {
+      h3 { font-size: 2.4vw; }
+      p { font-size: 1.6vw; }
+
+      @media screen and (max-width: 767px) {
+        h3 { font-size: 1.8rem; }
+        p { font-size: 1.4rem; }
+      }
     }
     </style>
     <!-- endcatch -->
     <div class="container p3">
       <div class="site-width">
-        <h2>Carousel 720</h2>
+        <h2>Max width, fixed height</h2>
         
     <ul role='tablist'>
       <li class='active'>
@@ -491,15 +524,13 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
 &lt;/div&gt;</code></pre></div>
     <div aria-labelledby='tab-css-3'
        id='tab-view-css-3'
-       role='tabpanel' aria-hidden='true'><pre><code class='css'>&lt;style&gt;
-.outer-jsc {
+       role='tabpanel' aria-hidden='true'><pre><code class='css'>.outer-jsc {
   position: relative;
   border: 1px solid #fff;
   margin: 0 auto;
   max-width: 720px;
   height: 450px;
-}
-&lt;/style&gt;</code></pre></div>
+}</code></pre></div>
       </div>
     </div>
 
