@@ -17,7 +17,7 @@ The size of the carousel is determined by the size of its outer container.
 | ...                 | `data-carousel-indicators` | Add indicators | No value |
 | `carousel-item`     | `data-carousel-href`       | Make the item clickable | http://pike.lysator.liu.se |
 | `<img>`             | `data-carousel-src`        | Source of default image | `/img/image-1.jpg` |
-| ...                 | `data-carousel-mq-(**n**)` | Alternative image source. **`n`** is a breakpoint for when the alternative image should be shown. | `data-carousel-mq-414='tablet-image.jpg'` |
+| ...                 | `data-carousel-mq-(n)`     | Alternative image source. **`(n)`** is a breakpoint for when the alternative image should be shown. | `data-carousel-mq-414='tablet-image.jpg'` |
 
 <!-- endcatch -->
 <!-- catch -->
