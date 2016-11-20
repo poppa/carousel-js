@@ -540,7 +540,7 @@
   window.addEventListener('DOMContentLoaded', () => {
     const cs = h.getByClass(document, 'carousel');
 
-    if (cs.length) {
+    if (cs && cs.length) {
       h.each(cs, el => {
         new Carousel(el);
       });

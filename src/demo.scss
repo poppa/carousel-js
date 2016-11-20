@@ -3,8 +3,9 @@
 */
 
 $site-padding: 3rem;
-$site-width: 1140px;
-$header-bg: #E7445B;
+$site-width:   1140px;
+$header-bg:    #E7445B;
+$link-bg:      #E7E344;
 
 *,*:after, *:before {
   box-sizing: border-box;
@@ -28,6 +29,7 @@ body {
 header {
   background: $header-bg;
   color: white;
+  line-height: 1.2;
 
   p {
     margin: 0;
@@ -36,6 +38,32 @@ header {
   .container {
     padding-top: $site-padding/2;
     padding-bottom: $site-padding/2;
+  }
+
+  .site-width {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .col {
+    flex-grow: 1;
+  }
+
+  .right-col {
+    font-size: x-large;
+    text-align: right;
+
+    a {
+      display: inline-block;
+      padding: $site-padding/2;
+      transition: background .3s ease-out, color .3s ease-out;
+
+      &:hover {
+        background: $header-bg;
+        color: $link-bg;
+      }
+    }
   }
 }
 
@@ -49,7 +77,7 @@ header {
     text-decoration: none;
     display: inline-block;
     color: $header-bg;
-    background: #E7E344;
+    background: $link-bg;
     padding: 0 4px;
   }
 }
@@ -72,6 +100,11 @@ header {
     margin-bottom: $site-padding/2;
   }
 
+  > div {
+    *:first-child {
+      margin-top: 0;
+    }
+  }
 
   .outer-jsc {
     position: relative;
@@ -122,7 +155,7 @@ code {
 
 pre {
   padding: $site-padding/2;
-  background: #313138;
+  background: #232323;
   color: #ccc;
   overflow: auto;
 
@@ -162,4 +195,8 @@ hr {
   background: transparent;
   border: none;
   border-bottom: 1px dashed #ccc;
+}
+
+.scrollable {
+  overflow: auto;
 }

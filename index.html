@@ -3,25 +3,34 @@
   <head>
     <meta content="width=device-width, initial-scale=1.0, user-scalable=yes" name="viewport">
     <meta charset="utf-8">
-    <title>Carousel.js - examples</title>
+    <title>Carousel.js - A simple Javascript carousel</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
+    <link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/railscasts.css">
     <link rel="stylesheet" href="build/demo.min.css">
     <link rel="stylesheet" href="build/carousel.min.css">
     <script src="build/carousel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
   </head>
   <body>
-
     <header>
       <div class="container">
         <div class="site-width">
-          <h1>Carousel.js</h1>
-          <p>A demo of the <strong><a href="https://github.com/poppa/js-carousel">Carousel.js</a></strong> script</p>
+          <div class="col left-col">
+            <h1>Carousel.js</h1>
+            <p>A simple JavaScript carousel</p>
+          </div>
+          <div class="col right-col">
+            <a href="https://github.com/poppa/carousel-js">
+              <i class="fa fa-code-fork"></i> me at <i class="fa fa-github"></i>
+            </a>
+          </div>
         </div>
       </div>
     </header>
-
-    <!-- <div class='container intro'></div> -->
-    <div class='container intro'><div class='site-width'><h1 id='carousel-js'>Carousel.JS</h1><p>A simple Javascript carousel with no library dependency and lazy image loading.</p><p>This is not a fancy pancy full fledged carousel in any way, and that will never
-be the purpose or goal either. If that&#39;s what you want then check out <a href='http://kenwheeler.github.io/slick/'>Slick</a> instead.</p><hr><p>The size of the carousel is determined by the size of its outer container.</p><table><thead><tr><th>Element/CSS class </th><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>carousel</code> </td><td><code>data-carousel-delay</code> </td><td>Delay in milliseconds between rotations </td><td>8000</td></tr><tr><td>... </td><td><code>data-carousel-indicators</code> </td><td>Add indicators </td><td>No value</td></tr><tr><td><code>carousel-item</code> </td><td><code>data-carousel-href</code> </td><td>Make the item clickable </td><td><a href='http://pike.lysator.liu.se'>http://pike.lysator.liu.se</a></td></tr><tr><td><code>&lt;img&gt;</code> </td><td><code>data-carousel-src</code> </td><td>Source of default image </td><td><code>/img/image-1.jpg</code></td></tr><tr><td>... </td><td><code>data-carousel-mq-(**n**)</code> </td><td>Alternative image source. <strong><code>n</code></strong> is a breakpoint for when the alternative image should be shown. </td><td><code>data-carousel-mq-414=&#39;tablet-image.jpg&#39;</code></td></tr></tbody></table><h2 id='example-boilerplate'>Example/Boilerplate</h2><pre><code>&lt;div class=&quot;my-carousel-wrapper&quot;&gt;
+    <div class='container intro'><div class='site-width'><p>A simple Javascript carousel with no library dependencies, with lazy image loading and support for multiple image sources for the same item depending on device size.</p><p>This is not a fancy pancy full fledged carousel in any way, and that will never
+be the purpose or goal either. If that&#39;s what you want then check out <a href='http://kenwheeler.github.io/slick/'>Slick</a> instead.</p><h2 id='howto'>Howto</h2><p>The size of the carousel is determined by the size of its outer container.</p><div class='scrollable'><table><thead><tr><th>Element/CSS class </th><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>carousel</code> </td><td><code>data-carousel-delay</code> </td><td>Delay in milliseconds between rotations </td><td>8000</td></tr><tr><td>... </td><td><code>data-carousel-indicators</code> </td><td>Add indicators </td><td>No value</td></tr><tr><td><code>carousel-item</code> </td><td><code>data-carousel-href</code> </td><td>Make the item clickable </td><td><a href='http://pike.lysator.liu.se'>http://pike.lysator.liu.se</a></td></tr><tr><td><code>&lt;img&gt;</code> </td><td><code>data-carousel-src</code> </td><td>Source of default image </td><td><code>/img/image-1.jpg</code></td></tr><tr><td>... </td><td><code>data-carousel-mq-(**n**)</code> </td><td>Alternative image source. <strong><code>n</code></strong> is a breakpoint for when the alternative image should be shown. </td><td><code>data-carousel-mq-414=&#39;tablet-image.jpg&#39;</code></td></tr></tbody></table></div><h2 id='example-boilerplate'>Example/Boilerplate</h2><pre><code class='html'>&lt;div class=&quot;my-carousel-wrapper&quot;&gt;
   &lt;!-- Milliseconds between item rotations --&gt;
   &lt;div class=&quot;carousel&quot; data-carousel-delay=&quot;8000&quot; data-carousel-indicators=&quot;&quot;&gt;
     &lt;div class=&quot;carousel-slider&quot;&gt;
@@ -51,7 +60,6 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
     &lt;/div&gt;
   &lt;/div&gt;
 &lt;/div&gt;</code></pre></div></div>
-
     <div class="container p1">
       <div class="site-width">
         <h2>Full width</h2>
@@ -60,6 +68,7 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
           <!-- Begin Carousel -->
           <div class="carousel" data-carousel-delay="5000" data-carousel-indicators="">
             <div class="carousel-slider">
+
               <!-- Begin item -->
               <div class="carousel-item" data-carousel-href="https://pike.lysator.liu.se/">
                 <div class="carousel-item-text">
@@ -73,6 +82,7 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
                      alt="Image 1" />
               </div>
               <!-- /End item -->
+
               <!-- Begin item -->
               <div class="carousel-item">
                 <div class="carousel-item-text">
@@ -86,6 +96,7 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
                      alt="Image 2" />
               </div>
               <!-- /End item -->
+
               <!-- Begin item -->
               <div class="carousel-item">
                 <div class="carousel-item-text">
@@ -99,6 +110,7 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
                      alt="Image 3" />
               </div>
               <!-- /End item -->
+
               <!-- Begin item -->
               <div class="carousel-item">
                 <div class="carousel-item-text">
@@ -112,6 +124,7 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
                      alt="Image 4" />
               </div>
               <!-- /End item -->
+
               <!-- Begin item -->
               <div class="carousel-item">
                 <div class="carousel-item-text">
@@ -125,6 +138,7 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
                      alt="Image 5" />
               </div>
               <!-- /End item -->
+
               <!-- Begin item -->
               <div class="carousel-item">
                 <div class="carousel-item-text">
@@ -138,13 +152,14 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
                      alt="Image 6" />
               </div>
               <!-- /End item -->
+
             </div>
           </div>
           <!-- /End Carousel -->
+
         </div>
       </div>
     </div>
-
     <div class="container p2">
       <div class="site-width">
         <h2>Carousel 500</h2>
@@ -184,7 +199,6 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
         </div>
       </div>
     </div>
-
     <div class="container p3">
       <div class="site-width">
         <h2>Carousel 720</h2>
