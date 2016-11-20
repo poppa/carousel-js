@@ -6,89 +6,11 @@ constant md_args = ([
 int main(int argc, array(string) argv)
 {
   string tmpl = Stdio.read_file("template.html");
-  string data = readme_md();
-
-  foreach (glob("*.tmpl", sort(get_dir("examples"))), string file) {
-    string part = Stdio.read_file(combine_path(__DIR__, "examples", file));
-
-    if (part[-1] == '\n') {
-      part = part[0..<1];
-    }
-
-    if (part[0] != '\n') {
-      part = "\n" + part;
-    }
-
-    data += part;
-  }
-
-  tmpl = replace(tmpl, "<!-- content -->", data);
-
-  Stdio.write_file("index.html", tmpl);
-
-#if 0
-  readme = Tools.Markdown.parse(readme, md_args);
-
-  Parser.HTML p = Parser.HTML();
-  p->add_container("div", lambda (Parser.HTML pp, mapping a, string c) {
-                            if (a->class && has_value(a->class, "intro")) {
-                              #ifdef MKDEV
-                              return "";
-                              #else
-                              return ({ "<div class='container intro'>" +
-                                        "<div class='site-width'>" +
-                                        readme + "</div></div>" });
-                              #endif
-                            }
-                          });
-
-  string html = Stdio.read_file(combine_path(__DIR__, "index.html"));
-  html = p->finish(html)->read();
-
-  Stdio.write_file("index.html", html);
-#endif
-
-  return 0;
-}
-
-string readme_md()
-{
   string readme = Stdio.read_file(combine_path(__DIR__, "README.md"));
-
-  multiset(string) start_keywords = (<
-    "catch", "catch(table)", "catch(code)" >);
-
-  multiset(string) end_keywords = (<
-    "endcatch" >);
-
-  array(mapping) parts = ({});
-
-  int start_pos = 0;
-  string start_kw;
-
-  Parser.HTML p = Parser.HTML();
-
-  p->add_quote_tag("!--",
-    lambda (Parser.HTML pp, string data) {
-      string d = String.trim_all_whites(data);
-      int s = pp->at_char();
-      int e = s + sizeof(data) + 7; // add length of <!---->
-
-      if (start_keywords[d]) {
-        start_pos = e;
-        start_kw = d;
-      }
-      else if (end_keywords[d]) {
-        string part = readme[start_pos..s-1];
-        parts += ({ ([ "type" : start_kw, "md" : part ]) });
-      }
-    }, "--");
-
-  p->finish(readme);
-
+  array(Token) parts = parse_html(readme);
   string out = "";
 
-  foreach (parts, mapping part) {
+  foreach (parts, Token part) {
     string html = Tools.Markdown.parse(part->md, md_args);
 
     if (part->type == "catch(table)") {
@@ -101,5 +23,166 @@ string readme_md()
     out += html;
   }
 
-  return "<div class='container intro'><div class='site-width'>" + out + "</div></div>";
+  out = "<div class='container intro'><div class='site-width'>" + out + "</div></div>";
+
+  foreach (glob("*.tmpl", sort(get_dir("examples"))), string file) {
+    string part = Stdio.read_file(combine_path(__DIR__, "examples", file));
+
+    if (part[-1] == '\n') {
+      part = part[0..<1];
+    }
+
+    if (part[0] != '\n') {
+      part = "\n" + part;
+    }
+
+
+    array(Token) pts = parse_html(part);
+
+    if (sizeof(pts)) {
+      // werror("Dude!: %O\n", pts);
+      part = make_src_tab(pts, part);
+    }
+
+    out += part;
+  }
+
+  tmpl = replace(tmpl, "<!-- content -->", out);
+
+  Stdio.write_file("index.html", tmpl);
+
+  return 0;
+}
+
+int ntabs = 0;
+string make_src_tab(array(Token) parts, string src)
+{
+  ntabs += 1;
+
+  // werror("%O\n", parts);
+  Token code = parts[0];
+  Token tabt = parts[1];
+
+  string tab_list = #"
+    <ul role='tablist'>
+      <li class='active'>
+        <button id='tab-example-" + ntabs + #"' role='tab'
+                aria-controls='tab-view-example-" + ntabs + #"'
+                aria-selected='true'>Example</button>
+      </li>
+      <li>
+        <button id='tab-code-" + ntabs + #"' role='tab'
+                aria-controls='tab-view-code-" + ntabs + #"'
+                aria-selected='false'>Source</button>
+      </li>
+    </ul>";
+
+  string srccode = src[code->start_pos..code->last_pos-1];
+  string srccode_md = "```html" + unindent(srccode) + "```";
+  srccode_md = Tools.Markdown.parse(srccode_md, md_args);
+  srccode_md = replace(srccode_md, "class='lang-", "class='");
+
+  string example = src[tabt->start_pos .. tabt->last_pos-1];
+
+  string tab1 = #"
+    <div aria-labelledby='tab-example-" + ntabs + #"'
+         id='tab-view-example-" + ntabs + #"'
+         role='tabpanel' aria-hidden='false'>" + example + "</div>";
+
+  string tab2 = #"
+    <div aria-labelledby='tab-code-" + ntabs + #"'
+         id='tab-view-code-" + ntabs + #"'
+         role='tabpanel' aria-hidden='true'>" + srccode_md + "</div>";
+
+  string res = tab_list + tab1 + tab2;
+
+  string head = src[0..tabt->first_pos-1];
+  string tail = src[tabt->end_pos..];
+
+  res = head + res + tail;
+
+  return res;
+}
+
+string unindent(string c) {
+  array(string) pts = c/"\n";
+  string ind;
+  int indlen;
+
+  foreach (pts, string pt) {
+    if ((pt - " " - "\t") == "") {
+      continue;
+    }
+
+    sscanf(pt, "%[\t ]<", ind);
+    indlen = sizeof(ind);
+    break;
+  }
+
+  array(string) out = ({});
+
+  foreach (pts, string p) {
+    if (has_prefix(p, ind)) {
+      p = p[indlen..];
+    }
+
+    out += ({ p });
+  }
+
+  return out * "\n";
+}
+
+class Token {
+  int start_pos,
+    first_pos,
+    end_pos,
+    last_pos;
+  string md, type;
+
+  protected string _sprintf(int t)
+  {
+    return sprintf("Token(%s : %d > %d)", type, first_pos, end_pos);
+  }
+}
+
+array(Token) parse_html(string input)
+{
+  multiset(string) start_keywords = (<
+    "catch", "catch(table)", "catch(code)", "catch(source)", "catch(tab)" >);
+
+  multiset(string) end_keywords = (<
+    "endcatch" >);
+
+  array(Token) out = ({});
+
+  ADT.Stack stack = ADT.Stack();
+
+  Parser.HTML p = Parser.HTML();
+
+  p->add_quote_tag("!--",
+    lambda (Parser.HTML pp, string data) {
+      string d = String.trim_all_whites(data);
+      int s = pp->at_char();
+      int e = s + sizeof(data) + 7; // add length of <!---->
+
+      if (start_keywords[d]) {
+        Token t = Token();
+        t->first_pos = s;
+        t->start_pos = e;
+        t->type  = d;
+
+        stack->push(t);
+      }
+      else if (end_keywords[d]) {
+        Token t = stack->pop();
+        t->md = input[t->start_pos..s-1];
+        t->end_pos = e;
+        t->last_pos = s;
+        out += ({ t });
+      }
+    }, "--");
+
+  p->finish(input);
+
+  return out;
 }

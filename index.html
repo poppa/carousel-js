@@ -6,12 +6,14 @@
     <title>Carousel.js - A simple Javascript carousel</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/default.min.css">
-    <link rel="stylesheet" href="https://highlightjs.org/static/demo/styles/railscasts.css">
-    <link rel="stylesheet" href="build/demo.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/styles/railscasts.min.css">
+    <link rel="stylesheet" href="site/build/demo.min.css">
     <link rel="stylesheet" href="build/carousel.min.css">
     <script src="build/carousel.min.js"></script>
+    <script src="site/build/tabs.min.js"></script>
+    <script src="site/build/site.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
-    <script>hljs.initHighlightingOnLoad();</script>
+    <script>if (hljs) hljs.initHighlightingOnLoad();</script>
   </head>
   <body>
     <header>
@@ -63,8 +65,24 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
     <div class="container p1">
       <div class="site-width">
         <h2>Full width</h2>
+        
+    <ul role='tablist'>
+      <li class='active'>
+        <button id='tab-example-1' role='tab'
+                aria-controls='tab-view-example-1'
+                aria-selected='true'>Example</button>
+      </li>
+      <li>
+        <button id='tab-code-1' role='tab'
+                aria-controls='tab-view-code-1'
+                aria-selected='false'>Source</button>
+      </li>
+    </ul>
+    <div aria-labelledby='tab-example-1'
+         id='tab-view-example-1'
+         role='tabpanel' aria-hidden='false'>
         <div class="outer-jsc">
-
+          <!-- catch(source) -->
           <!-- Begin Carousel -->
           <div class="carousel" data-carousel-delay="5000" data-carousel-indicators="">
             <div class="carousel-slider">
@@ -156,14 +174,125 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
             </div>
           </div>
           <!-- /End Carousel -->
-
+          <!-- endcatch -->
         </div>
+        </div>
+    <div aria-labelledby='tab-code-1'
+         id='tab-view-code-1'
+         role='tabpanel' aria-hidden='true'><pre><code class='html'>&lt;!-- Begin Carousel --&gt;
+&lt;div class=&quot;carousel&quot; data-carousel-delay=&quot;5000&quot; data-carousel-indicators=&quot;&quot;&gt;
+  &lt;div class=&quot;carousel-slider&quot;&gt;
+
+    &lt;!-- Begin item --&gt;
+    &lt;div class=&quot;carousel-item&quot; data-carousel-href=&quot;https://pike.lysator.liu.se/&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the first item&lt;/h3&gt;
+        &lt;p&gt;This is text for the first item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot;
+           data-carousel-src=&quot;images/img-mobile-1.png&quot;
+           data-carousel-mq-768=&quot;images/img-desktop-1.png&quot;
+           data-carousel-mq-414=&quot;images/img-tablet-1.png&quot;
+           alt=&quot;Image 1&quot; /&gt;
+    &lt;/div&gt;
+    &lt;!-- /End item --&gt;
+
+    &lt;!-- Begin item --&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the second item&lt;/h3&gt;
+        &lt;p&gt;This is text for the second item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot;
+           data-carousel-src=&quot;images/img-mobile-2.png&quot;
+           data-carousel-mq-768=&quot;images/img-desktop-2.png&quot;
+           data-carousel-mq-414=&quot;images/img-tablet-2.png&quot;
+           alt=&quot;Image 2&quot; /&gt;
+    &lt;/div&gt;
+    &lt;!-- /End item --&gt;
+
+    &lt;!-- Begin item --&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the third item&lt;/h3&gt;
+        &lt;p&gt;This is text for the third item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot;
+           data-carousel-src=&quot;images/img-mobile-3.png&quot;
+           data-carousel-mq-768=&quot;images/img-desktop-3.png&quot;
+           data-carousel-mq-414=&quot;images/img-tablet-3.png&quot;
+           alt=&quot;Image 3&quot; /&gt;
+    &lt;/div&gt;
+    &lt;!-- /End item --&gt;
+
+    &lt;!-- Begin item --&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the fourth item&lt;/h3&gt;
+        &lt;p&gt;This is text for the fourth item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot;
+           data-carousel-src=&quot;images/img-mobile-4.png&quot;
+           data-carousel-mq-768=&quot;images/img-desktop-4.png&quot;
+           data-carousel-mq-414=&quot;images/img-tablet-4.png&quot;
+           alt=&quot;Image 4&quot; /&gt;
+    &lt;/div&gt;
+    &lt;!-- /End item --&gt;
+
+    &lt;!-- Begin item --&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the fifth item&lt;/h3&gt;
+        &lt;p&gt;This is text for the fifth item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot;
+           data-carousel-src=&quot;images/img-mobile-5.png&quot;
+           data-carousel-mq-768=&quot;images/img-desktop-5.png&quot;
+           data-carousel-mq-414=&quot;images/img-tablet-5.png&quot;
+           alt=&quot;Image 5&quot; /&gt;
+    &lt;/div&gt;
+    &lt;!-- /End item --&gt;
+
+    &lt;!-- Begin item --&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the sixth item&lt;/h3&gt;
+        &lt;p&gt;This is text for the sixth item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot;
+           data-carousel-src=&quot;images/img-mobile-6.png&quot;
+           data-carousel-mq-768=&quot;images/img-desktop-6.png&quot;
+           data-carousel-mq-414=&quot;images/img-tablet-6.png&quot;
+           alt=&quot;Image 6&quot; /&gt;
+    &lt;/div&gt;
+    &lt;!-- /End item --&gt;
+
+  &lt;/div&gt;
+&lt;/div&gt;
+&lt;!-- /End Carousel --&gt;</code></pre></div>
       </div>
     </div>
     <div class="container p2">
       <div class="site-width">
         <h2>Carousel 500</h2>
+        
+    <ul role='tablist'>
+      <li class='active'>
+        <button id='tab-example-2' role='tab'
+                aria-controls='tab-view-example-2'
+                aria-selected='true'>Example</button>
+      </li>
+      <li>
+        <button id='tab-code-2' role='tab'
+                aria-controls='tab-view-code-2'
+                aria-selected='false'>Source</button>
+      </li>
+    </ul>
+    <div aria-labelledby='tab-example-2'
+         id='tab-view-example-2'
+         role='tabpanel' aria-hidden='false'>
         <div class="outer-jsc">
+          <!-- catch(source) -->
           <div class="carousel" data-carousel-delay="3000">
             <div class="carousel-slider">
               <div class="carousel-item">
@@ -196,13 +325,66 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
               </div>
             </div>
           </div>
+          <!-- endcatch -->
         </div>
+        </div>
+    <div aria-labelledby='tab-code-2'
+         id='tab-view-code-2'
+         role='tabpanel' aria-hidden='true'><pre><code class='html'>&lt;div class=&quot;carousel&quot; data-carousel-delay=&quot;3000&quot;&gt;
+  &lt;div class=&quot;carousel-slider&quot;&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the first item&lt;/h3&gt;
+        &lt;p&gt;This is text for the first item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-1.png&quot; alt=&quot;Image 1&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the second item&lt;/h3&gt;
+        &lt;p&gt;This is text for the second item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-2.png&quot; alt=&quot;Image 2&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the third item&lt;/h3&gt;
+        &lt;p&gt;This is text for the third item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-3.png&quot; alt=&quot;Image 3&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the fourth item&lt;/h3&gt;
+        &lt;p&gt;This is text for the fourth item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-4.png&quot; alt=&quot;Image 4&quot; /&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
       </div>
     </div>
     <div class="container p3">
       <div class="site-width">
         <h2>Carousel 720</h2>
+        
+    <ul role='tablist'>
+      <li class='active'>
+        <button id='tab-example-3' role='tab'
+                aria-controls='tab-view-example-3'
+                aria-selected='true'>Example</button>
+      </li>
+      <li>
+        <button id='tab-code-3' role='tab'
+                aria-controls='tab-view-code-3'
+                aria-selected='false'>Source</button>
+      </li>
+    </ul>
+    <div aria-labelledby='tab-example-3'
+         id='tab-view-example-3'
+         role='tabpanel' aria-hidden='false'>
         <div class="outer-jsc">
+          <!-- catch(source) -->
           <div class="carousel" data-carousel-delay="8000">
             <div class="carousel-slider">
               <div class="carousel-item">
@@ -235,7 +417,43 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
               </div>
             </div>
           </div>
+          <!-- endcatch -->
         </div>
+        </div>
+    <div aria-labelledby='tab-code-3'
+         id='tab-view-code-3'
+         role='tabpanel' aria-hidden='true'><pre><code class='html'>&lt;div class=&quot;carousel&quot; data-carousel-delay=&quot;8000&quot;&gt;
+  &lt;div class=&quot;carousel-slider&quot;&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the first item&lt;/h3&gt;
+        &lt;p&gt;This is text for the first item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-1.png&quot; alt=&quot;Image 1&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the second item&lt;/h3&gt;
+        &lt;p&gt;This is text for the second item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-2.png&quot; alt=&quot;Image 2&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the third item&lt;/h3&gt;
+        &lt;p&gt;This is text for the third item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-3.png&quot; alt=&quot;Image 3&quot; /&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;carousel-item&quot;&gt;
+      &lt;div class=&quot;carousel-item-text&quot;&gt;
+        &lt;h3&gt;Header for the fourth item&lt;/h3&gt;
+        &lt;p&gt;This is text for the fourth item&lt;/p&gt;
+      &lt;/div&gt;
+      &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-4.png&quot; alt=&quot;Image 4&quot; /&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
       </div>
     </div>
   </body>

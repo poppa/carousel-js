@@ -200,3 +200,45 @@ hr {
 .scrollable {
   overflow: auto;
 }
+
+ul[role=tablist] {
+  list-style: none;
+  padding: 0;
+  padding-left: $site-padding/2;
+  border-bottom: 1px solid $header-bg;
+
+  li {
+    position: relative;
+    display: inline-block;
+    margin-right: -1px;
+
+    button {
+      background: transparent;
+      color: $header-bg;
+      border: 1px dashed #aaa;
+      border-bottom: 0;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      padding: $site-padding/2 $site-padding;
+      cursor: pointer;
+    }
+
+    &.active {
+      z-index: 1;
+      button {
+        background: $header-bg;
+        color: white;
+        border: 1px solid $header-bg;
+        border-bottom: 0;
+      }
+    }
+  }
+}
+
+[role=tabpanel] {
+  display: none;
+
+  &[aria-hidden='false'] {
+    display: block;
+  }
+}

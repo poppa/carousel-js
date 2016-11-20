@@ -39,9 +39,37 @@ gulp.task('js', [], () => {
     .pipe(gulp.dest('build'));
 });
 
+gulp.task('site-js', [], () => {
+  return gulp.src([ 'site/src/*.js' ])
+    .pipe(plumber())
+    .pipe(newer('site/build'))
+    .pipe(babel({ presets: ['es2015'] }))
+    // .pipe(uglify())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest('site/build'));
+});
+
+gulp.task('site-sass', () => {
+  const sassOpts = {};
+
+  if (doCompress) {
+    sassOpts.outputStyle = 'compressed';
+  }
+
+  return gulp.src('site/src/*.scss')
+    .pipe(plumber())
+    .pipe(newer('site/build'))
+    .pipe(sass(sassOpts).on('error', sass.logError))
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(gulp.dest('site/build'));
+});
+
+
 gulp.task('watch', [ 'default' ], () => {
   gulp.watch('src/**/*.scss', [ 'sass' ]);
   gulp.watch('src/carousel.js', [ 'js' ]);
+  gulp.watch('site/src/*.js', [ 'site-js' ]);
+  gulp.watch('site/src/*.scss', [ 'site-sass' ]);
 });
 
-gulp.task('default', [ 'sass', 'js' ]);
+gulp.task('default', [ 'sass', 'js', 'site-sass', 'site-js' ]);
