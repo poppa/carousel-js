@@ -67,6 +67,11 @@ string make_src_tab(array(Token) parts, string src)
   // werror("%O\n", parts);
   Token code = parts[0];
   Token tabt = parts[1];
+  Token css;
+
+  if (sizeof(parts) > 2) {
+    css = parts[2];
+  }
 
   string tab_list = #"
     <ul role='tablist'>
@@ -78,9 +83,20 @@ string make_src_tab(array(Token) parts, string src)
       <li>
         <button id='tab-code-" + ntabs + #"' role='tab'
                 aria-controls='tab-view-code-" + ntabs + #"'
-                aria-selected='false'>Source</button>
-      </li>
-    </ul>";
+                aria-selected='false'>HTML</button>
+      </li>";
+
+  if (css) {
+    tab_list += #"
+      <li>
+        <button id='tab-css-" + ntabs + #"' role='tab'
+                aria-controls='tab-view-css-" + ntabs + #"'
+                aria-selected='false'>CSS</button>
+      </li>";
+  }
+
+  tab_list += "</ul>";
+
 
   string srccode = src[code->start_pos..code->last_pos-1];
   string srccode_md = "```html" + unindent(srccode) + "```";
@@ -99,7 +115,26 @@ string make_src_tab(array(Token) parts, string src)
          id='tab-view-code-" + ntabs + #"'
          role='tabpanel' aria-hidden='true'>" + srccode_md + "</div>";
 
+  string tab3;
+
+  if (css) {
+    string csscode = src[css->start_pos..css->last_pos-1];
+    string csscode_md = "```css" + unindent(csscode) + "```";
+    csscode_md = Tools.Markdown.parse(csscode_md, md_args);
+    csscode_md = replace(csscode_md, "class='lang-", "class='");
+    csscode_md = replace(csscode_md, " type=&quot;text/x-example&quot;", "");
+
+    tab3 = #"
+    <div aria-labelledby='tab-css-" + ntabs + #"'
+       id='tab-view-css-" + ntabs + #"'
+       role='tabpanel' aria-hidden='true'>" + csscode_md + "</div>";
+  }
+
   string res = tab_list + tab1 + tab2;
+
+  if (tab3) {
+    res += tab3;
+  }
 
   string head = src[0..tabt->first_pos-1];
   string tail = src[tabt->end_pos..];
@@ -153,7 +188,8 @@ class Token {
 array(Token) parse_html(string input)
 {
   multiset(string) start_keywords = (<
-    "catch", "catch(table)", "catch(code)", "catch(source)", "catch(tab)" >);
+    "catch", "catch(table)", "catch(code)", "catch(source)", "catch(tab)",
+    "catch(css)" >);
 
   multiset(string) end_keywords = (<
     "endcatch" >);
@@ -179,11 +215,13 @@ array(Token) parse_html(string input)
         stack->push(t);
       }
       else if (end_keywords[d]) {
-        Token t = stack->pop();
-        t->md = input[t->start_pos..s-1];
-        t->end_pos = e;
-        t->last_pos = s;
-        out += ({ t });
+        if (sizeof(stack)) {
+          Token t = stack->pop();
+          t->md = input[t->start_pos..s-1];
+          t->end_pos = e;
+          t->last_pos = s;
+          out += ({ t });
+        }
       }
     }, "--");
 

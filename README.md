@@ -20,10 +20,9 @@ The size of the carousel is determined by the size of its outer container.
 | ...                 | `data-carousel-mq-(n)`     | Alternative image source. **`(n)`** is a breakpoint for when the alternative image should be shown. | `data-carousel-mq-414='tablet-image.jpg'` |
 
 <!-- endcatch -->
-<!-- catch -->
+
 ## Example/Boilerplate
-<!-- endcatch -->
-<!-- catch(code) -->
+
 ```html
 <div class="my-carousel-wrapper">
   <!-- Milliseconds between item rotations -->
@@ -56,4 +55,3 @@ The size of the carousel is determined by the size of its outer container.
   </div>
 </div>
 ```
-<!-- endcatch -->

@@ -2,8 +2,9 @@
       <div class="site-width">
         <h2>Full width</h2>
         <!-- catch(tab) -->
-        <div class="outer-jsc">
-          <!-- catch(source) -->
+        <!-- catch(source) -->
+        <div class="outer-jsc"><!-- Implementation specific container -->
+
           <!-- Begin Carousel -->
           <div class="carousel" data-carousel-delay="5000" data-carousel-indicators="">
             <div class="carousel-slider">
@@ -95,8 +96,19 @@
             </div>
           </div>
           <!-- /End Carousel -->
-          <!-- endcatch -->
         </div>
+        <!-- endcatch -->
         <!-- endcatch -->
       </div>
     </div>
+
+    <!-- catch(css) -->
+    <style type="text/x-example">
+    .outer-jsc {
+      position: relative;
+      height: 450px;
+      border: 1px solid #fff;
+      margin: 0 auto;
+    }
+    </style>
+    <!-- endcatch -->
