@@ -3,12 +3,17 @@ constant md_args = ([
   "newline" : false
 ]);
 
+constant html_template = combine_path(__DIR__, "..", "site", "template.html");
+constant readme_md     = combine_path(__DIR__, "..", "README.md");
+constant examples_dir  = combine_path(__DIR__, "..", "examples");
+constant output_file   = combine_path(__DIR__, "..", "index.html");
+
 int main(int argc, array(string) argv)
 {
-  string tmpl = Stdio.read_file("template.html");
-  string readme = Stdio.read_file(combine_path(__DIR__, "README.md"));
+  string tmpl        = Stdio.read_file(html_template);
+  string readme      = Stdio.read_file(readme_md);
   array(Token) parts = parse_html(readme);
-  string out = "";
+  string out         = "";
 
   foreach (parts, Token part) {
     string html = Tools.Markdown.parse(part->md, md_args);
@@ -25,8 +30,8 @@ int main(int argc, array(string) argv)
 
   out = "<div class='container intro'><div class='site-width'>" + out + "</div></div>";
 
-  foreach (glob("*.tmpl", sort(get_dir("examples"))), string file) {
-    string part = Stdio.read_file(combine_path(__DIR__, "examples", file));
+  foreach (glob("*.tmpl", sort(get_dir(examples_dir))), string file) {
+    string part = Stdio.read_file(combine_path(examples_dir, file));
 
     if (part[-1] == '\n') {
       part = part[0..<1];
@@ -49,7 +54,7 @@ int main(int argc, array(string) argv)
 
   tmpl = replace(tmpl, "<!-- content -->", out);
 
-  Stdio.write_file("index.html", tmpl);
+  Stdio.write_file(output_file, tmpl);
 
   return 0;
 }
