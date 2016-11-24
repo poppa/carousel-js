@@ -34,7 +34,6 @@
 
 
     each(this.lis, (i, el) => {
-      window.console.log('Element: ', el);
       if (!el.classList.contains('active')) {
         let c = el.querySelectorAll('[role="tab"]');
 

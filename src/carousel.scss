@@ -38,7 +38,10 @@ $carousel-indicator-size: 12px;
     position: relative;
     height: 100%;
     left: 0;
-    transition: left .5s ease-in-out;
+
+    &.animate {
+      transition: left .5s ease-in-out;
+    }
 
     @include carousel-gen-pos;
   }

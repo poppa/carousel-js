@@ -198,6 +198,7 @@
 
   Carousel.prototype.pause = function() {
     clearTimeout(this.ivalId);
+    this.slider.classList.remove('animate');
   };
 
   Carousel.prototype.next = function() {
@@ -227,6 +228,8 @@
 
     clearTimeout(this.ivalId);
 
+    this.slider.classList.add('animate');
+
     this._loadIfNecessary(pos);
     this.setIndicator(pos);
     this.slider.dataset.carouselPos = pos;
@@ -253,6 +256,7 @@
     return !!this._hasmedia;
   };
 
+
   Carousel.prototype.changeMedia = function(size) {
     // werror('Carousel.changeMedia(', size, ')');
     h.each(this.items, item => {
@@ -261,6 +265,7 @@
       }
     });
   };
+
 
   Carousel.prototype._loadIfNecessary = function(pos) {
     if (pos >= 0 && pos < this.items.length) {
@@ -274,7 +279,8 @@
   Carousel.prototype._setupTouchEvents = function() {
     const x = {
       x: 0,
-      y: 0
+      y: 0,
+      startX: 0
     };
 
     const _ = this;
@@ -291,10 +297,16 @@
       const te = getEvent(e);
       x.x = te.clientX;
       x.y = te.clientY;
+      x.startX = te.clientX;
+
+      // werror('>> Touch start: ', x);
+
       _.pause();
     }, false);
 
     slider.addEventListener('touchend', e => {
+      // werror('<< Touch end: ', abort);
+
       if (abort) {
         abort = false;
         return;
@@ -340,9 +352,19 @@
     const touchMove = (e) => {
       const te   = getEvent(e);
       const diff = te.clientX - x.x;
+      const startDiff = te.clientX - x.startX;
       const left = slider.offsetLeft;
+      x.x = te.clientX;
+      let nleft = left+(diff/2);
 
-      if (Math.abs(diff) > _.config.touchthreshold) {
+      // werror('left: ',   left,
+      //        'mouse-x:', te.clientX,
+      //        'diff: ',   diff,
+      //        'nleft:',   nleft);
+
+
+      if (Math.abs(startDiff) > _.config.touchthreshold) {
+        // werror('++++ swap ++++');
         e.preventDefault();
         abort = true;
 
@@ -366,9 +388,10 @@
         return false;
       }
 
-      // werror('Move: ', diff);
+      // werror('Move: ', diff, left + diff);
+      // werror('>>>', nleft);
 
-      slider.style.left = Math.round(left + diff) + 'px';
+      slider.style.left = nleft + 'px';
     };
 
     const setTouchMove = () => {
