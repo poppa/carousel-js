@@ -5,6 +5,9 @@ A simple Javascript carousel with no library dependencies, with lazy image loadi
 This is not a fancy pancy full fledged carousel in any way, and that will never
 be the purpose or goal either. If that's what you want then check out [Slick](http://kenwheeler.github.io/slick/) instead.
 
+For real examples check out the [Carousel.JS](https://poppa.github.io/carousel-js/)
+web page.
+
 ---
 
 ## Howto
