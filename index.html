@@ -32,7 +32,7 @@
       </div>
     </header>
     <div class='container intro'><div class='site-width'><p>A simple Javascript carousel with no library dependencies, with lazy image loading and support for multiple image sources for the same item depending on device size.</p><p>This is not a fancy pancy full fledged carousel in any way, and that will never
-be the purpose or goal either. If that&#39;s what you want then check out <a href='http://kenwheeler.github.io/slick/'>Slick</a> instead.</p><h2 id='howto'>Howto</h2><p>The size of the carousel is determined by the size of its outer container.</p><div class='scrollable'><table><thead><tr><th>Element/CSS class </th><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>carousel</code> </td><td><code>data-carousel-delay</code> </td><td>Delay in milliseconds between rotations </td><td>8000</td></tr><tr><td>... </td><td><code>data-carousel-indicators</code> </td><td>Add indicators </td><td>No value</td></tr><tr><td><code>carousel-item</code> </td><td><code>data-carousel-href</code> </td><td>Make the item clickable </td><td><a href='http://pike.lysator.liu.se'>http://pike.lysator.liu.se</a></td></tr><tr><td><code>&lt;img&gt;</code> </td><td><code>data-carousel-src</code> </td><td>Source of default image </td><td><code>/img/image-1.jpg</code></td></tr><tr><td>... </td><td><code>data-carousel-mq-(n)</code> </td><td>Alternative image source. <strong><code>(n)</code></strong> is a breakpoint for when the alternative image should be shown. </td><td><code>data-carousel-mq-414=&#39;tablet-image.jpg&#39;</code></td></tr></tbody></table></div></div></div>
+be the purpose or goal either. If that&#39;s what you want then check out <a href='http://kenwheeler.github.io/slick/'>Slick</a> instead.</p><h2 id='howto'>Howto</h2><p>The size of the carousel is determined by the size of its outer container.</p><div class='scrollable'><table><thead><tr><th>Element/CSS class </th><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>carousel</code> </td><td><code>data-carousel-delay</code> </td><td>Delay in milliseconds between rotations </td><td>8000</td></tr><tr><td>... </td><td><code>data-carousel-indicators</code> </td><td>Add indicators </td><td>No value</td></tr><tr><td>... </td><td><code>data-carousel-touch-threshold</code> </td><td>x distance to start transition on swipes </td><td>100</td></tr><tr><td><code>carousel-item</code> </td><td><code>data-carousel-href</code> </td><td>Make the item clickable </td><td><a href='http://pike.lysator.liu.se'>http://pike.lysator.liu.se</a></td></tr><tr><td><code>&lt;img&gt;</code> </td><td><code>data-carousel-src</code> </td><td>Source of default image </td><td><code>/img/image-1.jpg</code></td></tr><tr><td>... </td><td><code>data-carousel-mq-(n)</code> </td><td>Alternative image source. <strong><code>(n)</code></strong> is a breakpoint for when the alternative image should be shown. </td><td><code>data-carousel-mq-414=&#39;tablet-image.jpg&#39;</code></td></tr></tbody></table></div></div></div>
     <div class="container p1">
       <div class="site-width">
         <h2>Full width <small> with relative height and font size</small></h2>
@@ -60,7 +60,10 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
         <div class="outer-jsc"><!-- Implementation specific container -->
 
           <!-- Begin Carousel -->
-          <div class="carousel" data-carousel-delay="5000" data-carousel-indicators="">
+          <div class="carousel"
+               data-carousel-delay="5000"
+               data-carousel-touch-threshold="120"
+               data-carousel-indicators="">
             <div class="carousel-slider">
 
               <!-- Begin item -->
@@ -158,7 +161,10 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
          role='tabpanel' aria-hidden='true'><pre><code class='html'>&lt;div class=&quot;outer-jsc&quot;&gt;&lt;!-- Implementation specific container --&gt;
 
   &lt;!-- Begin Carousel --&gt;
-  &lt;div class=&quot;carousel&quot; data-carousel-delay=&quot;5000&quot; data-carousel-indicators=&quot;&quot;&gt;
+  &lt;div class=&quot;carousel&quot;
+       data-carousel-delay=&quot;5000&quot;
+       data-carousel-touch-threshold=&quot;120&quot;
+       data-carousel-indicators=&quot;&quot;&gt;
     &lt;div class=&quot;carousel-slider&quot;&gt;
 
       &lt;!-- Begin item --&gt;

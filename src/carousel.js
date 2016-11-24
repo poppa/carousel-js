@@ -136,7 +136,7 @@
     this.config = {
       delay: 8000,
       transition: 'slide',
-      touchthreshold: 40
+      touchthreshold: 80
     };
 
     carousels.push(this);
@@ -164,6 +164,10 @@
 
     if (el.dataset.carouselTransition) {
       this.config.transition = el.dataset.carouselTransition;
+    }
+
+    if (el.dataset.carouselTouchThreshold) {
+      this.config.touchthreshold = parseInt(el.dataset.carouselTouchThreshold, 10);
     }
 
     if (this.items.length) {

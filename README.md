@@ -14,10 +14,11 @@ The size of the carousel is determined by the size of its outer container.
 | Element/CSS class   | Attribute                  | Description | Example |
 | ------------------- | -------------------------- | ----------- | ------- |
 | `carousel`          | `data-carousel-delay`      | Delay in milliseconds between rotations | 8000 |
-| ...                 | `data-carousel-indicators` | Add indicators | No value |
+|       ...           | `data-carousel-indicators` | Add indicators | No value |
+|       ...           | `data-carousel-touch-threshold` | x distance to start transition on swipes | 100 |
 | `carousel-item`     | `data-carousel-href`       | Make the item clickable | http://pike.lysator.liu.se |
 | `<img>`             | `data-carousel-src`        | Source of default image | `/img/image-1.jpg` |
-| ...                 | `data-carousel-mq-(n)`     | Alternative image source. **`(n)`** is a breakpoint for when the alternative image should be shown. | `data-carousel-mq-414='tablet-image.jpg'` |
+|       ...           | `data-carousel-mq-(n)`     | Alternative image source. **`(n)`** is a breakpoint for when the alternative image should be shown. | `data-carousel-mq-414='tablet-image.jpg'` |
 
 <!-- endcatch -->
 
