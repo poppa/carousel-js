@@ -29,9 +29,9 @@ body {
 h1, h2, h3, h4  {
   line-height: 1.1;
 
-  &+ p {
-    margin-top: -$site-padding/3;
-  }
+  // &+ p {
+  //   margin-top: -$site-padding/3;
+  // }
 
   small {
     font-weight: normal;
@@ -189,13 +189,7 @@ header {
 }
 
 .intro {
-  h1 {
-    font-size: 2rem;
-  }
 
-  h2 {
-    font-size: 1.6rem;
-  }
 }
 
 code {
@@ -239,11 +233,16 @@ tbody {
   }
 }
 
+code {
+  color: #930;
+}
+
 hr {
   height: 1px;
   background: transparent;
   border: none;
   border-bottom: 1px dashed #ccc;
+  margin: $site-padding 0;
 }
 
 .scrollable {
