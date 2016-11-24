@@ -151,6 +151,10 @@
 
     this._hasmedia     = -1;
 
+    if (isTouch) {
+      this.element.classList.add('carousel-is-touch');
+    }
+
     let items = h.getByClass(this.slider, 'carousel-item');
 
     let pos = 0;
@@ -302,15 +306,13 @@
 
     slider.addEventListener('touchstart', e => {
       const te = getEvent(e);
-
       initStart(te);
-      // werror('>> Touch start: ', x);
-
+      this.element.classList.add('carousel-is-touchdrag');
       _.pause();
     }, false);
 
     slider.addEventListener('touchend', e => {
-      // werror('<< Touch end: ', abort);
+      this.element.classList.remove('carousel-is-touchdrag');
 
       if (abort) {
         abort = false;
@@ -349,7 +351,7 @@
     }, false);
 
     slider.addEventListener('touchcancel', () => {
-      // werror('Touch cancel..');
+      this.element.classList.remove('carousel-is-touchdrag');
       slider.style.removeProperty('left');
       _.goto(_.currPos);
     }, false);
@@ -362,14 +364,8 @@
       x.x = te.clientX;
       let nleft = left+(diff/2);
 
-      // werror('left: ',   left,
-      //        'mouse-x:', te.clientX,
-      //        'diff: ',   diff,
-      //        'nleft:',   nleft);
-
 
       if (Math.abs(startDiff) > _.config.touchthreshold) {
-        // werror('++++ swap ++++');
         e.preventDefault();
         abort = true;
 
@@ -393,9 +389,6 @@
 
         return false;
       }
-
-      // werror('Move: ', diff, left + diff);
-      // werror('>>>', nleft);
 
       slider.style.left = nleft + 'px';
     };

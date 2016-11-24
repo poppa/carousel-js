@@ -83,6 +83,23 @@ $carousel-indicator-size: 12px;
     text-align: center;
   }
 
+  &-is-touch {
+    .carousel-indicators {
+      bottom: initial;
+      top: -60px;
+      opacity: 0;
+      transition: top .5s ease-out,
+                  opacity .3s ease-out;
+    }
+
+    &drag {
+      .carousel-indicators {
+        top: 0;
+        opacity: 1;
+      }
+    }
+  }
+
   .carousel-indicator {
     width: $carousel-indicator-size;
     height: $carousel-indicator-size;
