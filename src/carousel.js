@@ -167,7 +167,8 @@
     }
 
     if (el.dataset.carouselTouchThreshold) {
-      this.config.touchthreshold = parseInt(el.dataset.carouselTouchThreshold, 10);
+      this.config.touchthreshold =
+        parseInt(el.dataset.carouselTouchThreshold, 10);
     }
 
     if (this.items.length) {
@@ -219,10 +220,6 @@
   };
 
   Carousel.prototype.goto = function(pos) {
-    // if (pos < 0 || pos >= this.items.length) {
-    //   return;
-    // }
-
     if (pos < 0) {
       pos = this.items.length - 1;
     }
@@ -293,16 +290,20 @@
       return e.changedTouches[0];
     };
 
+    const initStart = function(e) {
+      x.x = e.clientX;
+      x.y = e.clientY;
+      x.startX = e.clientX;
+    };
+
     const slider = this.slider;
 
     let abort = false;
 
     slider.addEventListener('touchstart', e => {
       const te = getEvent(e);
-      x.x = te.clientX;
-      x.y = te.clientY;
-      x.startX = te.clientX;
 
+      initStart(te);
       // werror('>> Touch start: ', x);
 
       _.pause();
@@ -385,6 +386,7 @@
         }
 
         setTimeout(() => {
+          initStart(te);
           setTouchMove();
         }, 600);
 
