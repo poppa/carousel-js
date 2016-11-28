@@ -9,6 +9,8 @@
 (function(window, document, navigator) {
   'use strict';
 
+  // const werror = window.console.log;
+
   // Storage for all created carousels.
   const carousels = [];
 
@@ -56,8 +58,6 @@
       }, 10);
     }
   };
-
-  const werror = window.console.log;
 
   const isTouch = (('ontouchstart' in window)       ||
                    (navigator.maxTouchPoints   > 0) ||
@@ -212,13 +212,12 @@
 
   Carousel.prototype.next = function() {
     this.currPos += 1;
-
     if (this.currPos >= this.items.length) {
       this.currPos = 0;
     }
-    else {
-      this._loadIfNecessary(this.currPos+1);
-    }
+    // else {
+    // this._loadIfNecessary(this.currPos+1);
+    // }
 
     this.goto(this.currPos);
   };
@@ -231,11 +230,16 @@
       pos = 0;
     }
 
+    const next_prev = pos < this.currPos ? pos - 1 : pos + 1;
+
+    // werror('curr', pos, ' next', next_prev);
+
     clearTimeout(this.ivalId);
 
     this.slider.classList.add('animate');
 
     this._loadIfNecessary(pos);
+    this._loadIfNecessary(next_prev);
     this.setIndicator(pos);
     this.slider.dataset.carouselPos = pos;
     this.currPos = pos;
@@ -275,6 +279,7 @@
   Carousel.prototype._loadIfNecessary = function(pos) {
     if (pos >= 0 && pos < this.items.length) {
       if (!this.items[pos].isLoaded) {
+        // werror('_loadIfNecessary(', pos, this.currPos, ')');
         this.items[pos].load();
       }
     }
@@ -353,7 +358,8 @@
     slider.addEventListener('touchcancel', () => {
       this.element.classList.remove('carousel-is-touchdrag');
       slider.style.removeProperty('left');
-      _.goto(_.currPos);
+      // _.goto(_.currPos);
+      _.play();
     }, false);
 
     const touchMove = (e) => {
@@ -385,7 +391,6 @@
           initStart(te);
           setTouchMove();
         }, 600);
-
 
         return false;
       }
