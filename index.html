@@ -36,7 +36,8 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
 that the carousel wrapper must have a given height in some way.</p><hr><div class='scrollable'><h3 id='carousel-wrapper'>Carousel wrapper</h3><p>The outer most <code>div</code> element of the carousel that contain all carousel content</p><pre><code class='lang-html'>&lt;div class=&quot;carousel&quot;
      data-carousel-delay=&quot;8000&quot;
      data-carousel-indicators=&quot;&quot;
-     data-carousel-touch-threshold=&quot;80&quot;&gt;</code></pre><table><thead><tr><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>data-carousel-delay</code> </td><td>Delay in milliseconds between rotations </td><td>10000</td></tr><tr><td><code>data-carousel-indicators</code> </td><td>Add indicators </td><td>No value</td></tr><tr><td><code>data-carousel-touch-threshold</code> </td><td>x distance to swipe before transition starts </td><td>100</td></tr></tbody></table><hr><h3 id='carousel-slider'>Carousel slider</h3><p>This is the first child of the <strong>Carousel wrapper</strong>. This element takes no data attributes</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-slider&quot;&gt;</code></pre><hr><h3 id='carousel-item'>Carousel item</h3><p>This container is the wrapper for every item in the carousel.</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-item&quot;
+     data-carousel-touch-threshold=&quot;80&quot;
+     data-carousel-rubberband-swipe=&quot;1.5&quot;&gt;</code></pre><table><thead><tr><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>data-carousel-delay</code> </td><td>Delay in milliseconds between rotations </td><td>10000</td></tr><tr><td><code>data-carousel-indicators</code> </td><td>Add indicators </td><td>No value</td></tr><tr><td><code>data-carousel-touch-threshold</code> </td><td>x distance to swipe before transition starts </td><td>100</td></tr><tr><td><code>data-carousel-rubberband-swipe</code> </td><td>Give a rubber band effect when swipeing. </td><td>1.5</td></tr></tbody></table><hr><h3 id='carousel-slider'>Carousel slider</h3><p>This is the first child of the <strong>Carousel wrapper</strong>. This element takes no data attributes</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-slider&quot;&gt;</code></pre><hr><h3 id='carousel-item'>Carousel item</h3><p>This container is the wrapper for every item in the carousel.</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-item&quot;
      data-carousel-href=&quot;http://domain.com/path/&quot;&gt;</code></pre><table><thead><tr><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>data-carousel-href</code> </td><td>URL to goto when the item is clicked </td><td>/internal/path</td></tr></tbody></table><hr><h3 id='carousel-item-text'>Carousel item text</h3><p>This container can contain any html.</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-item-text&quot;&gt;</code></pre><hr><h3 id='carousel-item-image'>Carousel item image</h3><p>The image tag uses lazy loading so the best thing to do is to set the <code>src</code>
 attribute to point to an empty pixel image or something like that and use
 the <code>carousel-*</code> attributes for the real image sources. The <code>img</code> tag has support
@@ -349,35 +350,45 @@ the default source attribute.</p><pre><code class='lang-html'>&lt;img src=&quot;
          role='tabpanel' aria-hidden='false'>
         <!-- catch(source) -->
         <div class="outer-jsc">
-          <div class="carousel" data-carousel-delay="3000">
+          <div class="carousel"
+               data-carousel-delay="3000"
+               data-carousel-rubberband-swipe="2">
             <div class="carousel-slider">
               <div class="carousel-item">
                 <div class="carousel-item-text">
                   <h3>Header for the first item</h3>
                   <p>This is text for the first item</p>
                 </div>
-                <img src="images/transparent-pixel.gif" data-carousel-src="images/img-desktop-1.png" alt="Image 1">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-1.png"
+                     alt="Image 1">
               </div>
               <div class="carousel-item">
                 <div class="carousel-item-text">
                   <h3>Header for the second item</h3>
                   <p>This is text for the second item</p>
                 </div>
-                <img src="images/transparent-pixel.gif" data-carousel-src="images/img-desktop-2.png" alt="Image 2">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-2.png"
+                     alt="Image 2">
               </div>
               <div class="carousel-item">
                 <div class="carousel-item-text">
                   <h3>Header for the third item</h3>
                   <p>This is text for the third item</p>
                 </div>
-                <img src="images/transparent-pixel.gif" data-carousel-src="images/img-desktop-3.png" alt="Image 3">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-3.png"
+                     alt="Image 3">
               </div>
               <div class="carousel-item">
                 <div class="carousel-item-text">
                   <h3>Header for the fourth item</h3>
                   <p>This is text for the fourth item</p>
                 </div>
-                <img src="images/transparent-pixel.gif" data-carousel-src="images/img-desktop-4.png" alt="Image 4">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-4.png"
+                     alt="Image 4">
               </div>
             </div>
           </div>
@@ -387,35 +398,45 @@ the default source attribute.</p><pre><code class='lang-html'>&lt;img src=&quot;
     <div aria-labelledby='tab-code-2'
          id='tab-view-code-2'
          role='tabpanel' aria-hidden='true'><pre><code class='html'>&lt;div class=&quot;outer-jsc&quot;&gt;
-  &lt;div class=&quot;carousel&quot; data-carousel-delay=&quot;3000&quot;&gt;
+  &lt;div class=&quot;carousel&quot;
+       data-carousel-delay=&quot;3000&quot;
+       data-carousel-rubberband-swipe=&quot;2&quot;&gt;
     &lt;div class=&quot;carousel-slider&quot;&gt;
       &lt;div class=&quot;carousel-item&quot;&gt;
         &lt;div class=&quot;carousel-item-text&quot;&gt;
           &lt;h3&gt;Header for the first item&lt;/h3&gt;
           &lt;p&gt;This is text for the first item&lt;/p&gt;
         &lt;/div&gt;
-        &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-1.png&quot; alt=&quot;Image 1&quot;&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-1.png&quot;
+             alt=&quot;Image 1&quot;&gt;
       &lt;/div&gt;
       &lt;div class=&quot;carousel-item&quot;&gt;
         &lt;div class=&quot;carousel-item-text&quot;&gt;
           &lt;h3&gt;Header for the second item&lt;/h3&gt;
           &lt;p&gt;This is text for the second item&lt;/p&gt;
         &lt;/div&gt;
-        &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-2.png&quot; alt=&quot;Image 2&quot;&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-2.png&quot;
+             alt=&quot;Image 2&quot;&gt;
       &lt;/div&gt;
       &lt;div class=&quot;carousel-item&quot;&gt;
         &lt;div class=&quot;carousel-item-text&quot;&gt;
           &lt;h3&gt;Header for the third item&lt;/h3&gt;
           &lt;p&gt;This is text for the third item&lt;/p&gt;
         &lt;/div&gt;
-        &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-3.png&quot; alt=&quot;Image 3&quot;&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-3.png&quot;
+             alt=&quot;Image 3&quot;&gt;
       &lt;/div&gt;
       &lt;div class=&quot;carousel-item&quot;&gt;
         &lt;div class=&quot;carousel-item-text&quot;&gt;
           &lt;h3&gt;Header for the fourth item&lt;/h3&gt;
           &lt;p&gt;This is text for the fourth item&lt;/p&gt;
         &lt;/div&gt;
-        &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-4.png&quot; alt=&quot;Image 4&quot;&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-4.png&quot;
+             alt=&quot;Image 4&quot;&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;
@@ -521,28 +542,36 @@ the default source attribute.</p><pre><code class='lang-html'>&lt;img src=&quot;
                   <h3>Header for the first item</h3>
                   <p>This is text for the first item</p>
                 </div>
-                <img src="images/transparent-pixel.gif" data-carousel-src="images/img-desktop-1.png" alt="Image 1" />
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-1.png"
+                     alt="Image 1" />
               </div>
               <div class="carousel-item">
                 <div class="carousel-item-text">
                   <h3>Header for the second item</h3>
                   <p>This is text for the second item</p>
                 </div>
-                <img src="images/transparent-pixel.gif" data-carousel-src="images/img-desktop-2.png" alt="Image 2" />
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-2.png"
+                     alt="Image 2" />
               </div>
               <div class="carousel-item">
                 <div class="carousel-item-text">
                   <h3>Header for the third item</h3>
                   <p>This is text for the third item</p>
                 </div>
-                <img src="images/transparent-pixel.gif" data-carousel-src="images/img-desktop-3.png" alt="Image 3" />
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-3.png"
+                     alt="Image 3" />
               </div>
               <div class="carousel-item">
                 <div class="carousel-item-text">
                   <h3>Header for the fourth item</h3>
                   <p>This is text for the fourth item</p>
                 </div>
-                <img src="images/transparent-pixel.gif" data-carousel-src="images/img-desktop-4.png" alt="Image 4" />
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-4.png"
+                     alt="Image 4" />
               </div>
             </div>
           </div>
@@ -559,28 +588,36 @@ the default source attribute.</p><pre><code class='lang-html'>&lt;img src=&quot;
           &lt;h3&gt;Header for the first item&lt;/h3&gt;
           &lt;p&gt;This is text for the first item&lt;/p&gt;
         &lt;/div&gt;
-        &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-1.png&quot; alt=&quot;Image 1&quot; /&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-1.png&quot;
+             alt=&quot;Image 1&quot; /&gt;
       &lt;/div&gt;
       &lt;div class=&quot;carousel-item&quot;&gt;
         &lt;div class=&quot;carousel-item-text&quot;&gt;
           &lt;h3&gt;Header for the second item&lt;/h3&gt;
           &lt;p&gt;This is text for the second item&lt;/p&gt;
         &lt;/div&gt;
-        &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-2.png&quot; alt=&quot;Image 2&quot; /&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-2.png&quot;
+             alt=&quot;Image 2&quot; /&gt;
       &lt;/div&gt;
       &lt;div class=&quot;carousel-item&quot;&gt;
         &lt;div class=&quot;carousel-item-text&quot;&gt;
           &lt;h3&gt;Header for the third item&lt;/h3&gt;
           &lt;p&gt;This is text for the third item&lt;/p&gt;
         &lt;/div&gt;
-        &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-3.png&quot; alt=&quot;Image 3&quot; /&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-3.png&quot;
+             alt=&quot;Image 3&quot; /&gt;
       &lt;/div&gt;
       &lt;div class=&quot;carousel-item&quot;&gt;
         &lt;div class=&quot;carousel-item-text&quot;&gt;
           &lt;h3&gt;Header for the fourth item&lt;/h3&gt;
           &lt;p&gt;This is text for the fourth item&lt;/p&gt;
         &lt;/div&gt;
-        &lt;img src=&quot;images/transparent-pixel.gif&quot; data-carousel-src=&quot;images/img-desktop-4.png&quot; alt=&quot;Image 4&quot; /&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-4.png&quot;
+             alt=&quot;Image 4&quot; /&gt;
       &lt;/div&gt;
     &lt;/div&gt;
   &lt;/div&gt;

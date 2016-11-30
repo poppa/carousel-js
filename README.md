@@ -30,14 +30,16 @@ The outer most `div` element of the carousel that contain all carousel content
 <div class="carousel"
      data-carousel-delay="8000"
      data-carousel-indicators=""
-     data-carousel-touch-threshold="80">
+     data-carousel-touch-threshold="80"
+     data-carousel-rubberband-swipe="1.5">
 ```
 
-| Attribute                       | Description                                  | Example  |
-| ------------------------------- | -------------------------------------------- | -------- |
-| `data-carousel-delay`           | Delay in milliseconds between rotations      | 10000    |
-| `data-carousel-indicators`      | Add indicators                               | No value |
-| `data-carousel-touch-threshold` | x distance to swipe before transition starts | 100      |
+| Attribute                        | Description                                  | Example  |
+| -------------------------------- | -------------------------------------------- | -------- |
+| `data-carousel-delay`            | Delay in milliseconds between rotations      | 10000    |
+| `data-carousel-indicators`       | Add indicators                               | No value |
+| `data-carousel-touch-threshold`  | x distance to swipe before transition starts | 100      |
+| `data-carousel-rubberband-swipe` | Give a rubber band effect when swipeing.     | 1.5      |
 
 ---
 

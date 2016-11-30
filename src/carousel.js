@@ -3,7 +3,7 @@
 */
 
 // jshint esversion: 6, undef: true, unused: true
-/* global window, document, setTimeout, clearTimeout */
+/* global window, document, setTimeout, clearTimeout, requestAnimationFrame */
 
 
 (function(window, document, navigator) {
@@ -17,8 +17,9 @@
   // Storage for match media sizes.
   const mediaQueries = {};
 
-  // When we get a media match we don't act upon in immediately but only
-  // execute on the last one. This is the interval ids for matches and no
+  // When we get a media match we don't act upon it immediately but only
+  // execute on the last one.
+  // This is the interval ids for matches and no
   // matches. The latter is needed if no media is matched, in which case we
   // need to set the default media.
   let mmcival, nomatchival;
@@ -128,27 +129,44 @@
     };
   }());
 
-  if (isTouch) {
-    h.getByTag(document, 'html', true).classList.add('carousel-istouch');
-  }
+  // If touch device, add css class to the HTML element
+  // if (isTouch) {
+  //   h.getByTag(document, 'html', true).classList.add('carousel-is-touch');
+  // }
 
+  /*
+    Creates a new Carousel object
+    @param HTMLElement el
+  */
   const Carousel = function(el) {
     this.config = {
-      delay: 8000,
-      transition: 'slide',
-      touchthreshold: 80
+      delay:          8000,
+      transition:     'slide',
+      touchthreshold: 80,
+      // This must at least be 1 (no rubber band effect)
+      swipeRubberBand: 1
     };
+
+    const _ds = el.dataset,
+      _cfg = this.config;
 
     carousels.push(this);
 
     this.element       = el;
-    this.useIndicators = el.dataset.carouselIndicators !== undefined;
+    this.useIndicators = _ds.carouselIndicators !== undefined;
+    // Storage for Carousel.Indicator objects
     this.indicators    = [];
     this.slider        = h.getByClass(el, 'carousel-slider', true);
+    // Storage for Carousel.Item objects
     this.items         = [];
+    // Interval ID for transitions between items
     this.ivalId        = null;
+    // Current item
     this.currPos       = 0;
-
+    // Flag for if multiple image sources are used.
+    // -1 = not checked
+    //  0 = no
+    //  1 = yes
     this._hasmedia     = -1;
 
     if (isTouch) {
@@ -156,23 +174,29 @@
     }
 
     let items = h.getByClass(this.slider, 'carousel-item');
-
     let pos = 0;
+
     h.each(items, el => {
       this.items.push(new Carousel.Item(el, pos++));
     });
 
-    if (el.dataset.carouselDelay) {
-      this.config.delay = parseInt(el.dataset.carouselDelay, 10);
+    if (_ds.carouselDelay) {
+      _cfg.delay = parseInt(_ds.carouselDelay, 10);
     }
 
-    if (el.dataset.carouselTransition) {
-      this.config.transition = el.dataset.carouselTransition;
+    if (_ds.carouselTransition) {
+      _cfg.transition = _ds.carouselTransition;
     }
 
-    if (el.dataset.carouselTouchThreshold) {
-      this.config.touchthreshold =
-        parseInt(el.dataset.carouselTouchThreshold, 10);
+    if (_ds.carouselTouchThreshold) {
+      _cfg.touchthreshold = parseInt(_ds.carouselTouchThreshold, 10);
+    }
+
+    if (_ds.carouselRubberbandSwipe) {
+      let tmp = parseFloat(_ds.carouselRubberbandSwipe, 10);
+      if (tmp > 1) {
+        _cfg.swipeRubberBand = tmp;
+      }
     }
 
     if (this.items.length) {
@@ -191,6 +215,14 @@
     this.play();
   };
 
+  Carousel.prototype.sliderAnimate = function(on) {
+    if (on) {
+      this.slider.classList.add('animate');
+    }
+    else {
+      this.slider.classList.remove('animate');
+    }
+  };
 
   Carousel.prototype.play = function() {
     if (this.ivalId) {
@@ -207,7 +239,7 @@
 
   Carousel.prototype.pause = function() {
     clearTimeout(this.ivalId);
-    this.slider.classList.remove('animate');
+    this.sliderAnimate(false);
   };
 
   Carousel.prototype.next = function() {
@@ -215,9 +247,6 @@
     if (this.currPos >= this.items.length) {
       this.currPos = 0;
     }
-    // else {
-    // this._loadIfNecessary(this.currPos+1);
-    // }
 
     this.goto(this.currPos);
   };
@@ -236,7 +265,7 @@
 
     clearTimeout(this.ivalId);
 
-    this.slider.classList.add('animate');
+    this.sliderAnimate(true);
 
     this._loadIfNecessary(pos);
     this._loadIfNecessary(next_prev);
@@ -287,6 +316,7 @@
 
 
   Carousel.prototype._setupTouchEvents = function() {
+    // Used to store the touch start/drag positions
     const x = {
       x: 0,
       y: 0,
@@ -308,8 +338,12 @@
     const slider = this.slider;
 
     let abort = false;
+    let touchendIval;
 
     slider.addEventListener('touchstart', e => {
+      if (touchendIval) {
+        clearTimeout(touchendIval);
+      }
       const te = getEvent(e);
       initStart(te);
       this.element.classList.add('carousel-is-touchdrag');
@@ -317,7 +351,10 @@
     }, false);
 
     slider.addEventListener('touchend', e => {
-      this.element.classList.remove('carousel-is-touchdrag');
+      touchendIval = setTimeout(() => {
+        _.element.classList.remove('carousel-is-touchdrag');
+      }, 1000);
+
 
       if (abort) {
         abort = false;
@@ -325,51 +362,33 @@
       }
 
       const te = getEvent(e);
-      let next;
       let diff = te.clientX - x.x;
 
       if (Math.abs(diff) < _.config.touchthreshold) {
-        slider.style.removeProperty('left');
-        return;
+        _.sliderAnimate(true);
+        requestAnimationFrame(() => {
+          slider.style.removeProperty('left');
+        });
       }
 
-      if (te.clientX < x.x) {
-        next = _.currPos + 1;
-        if (next >= _.items.length) {
-          next = 0;
-        }
-      }
-      else if (te.clientX > x.x) {
-        next = _.currPos - 1;
-        if (next < 0) {
-          next = _.items.length - 1;
-        }
-      }
+      _.play();
 
-      if (next !== undefined) {
-        slider.style.removeProperty('left');
-        _.goto(next);
-      }
-      else {
-        _.play();
-      }
     }, false);
 
     slider.addEventListener('touchcancel', () => {
-      this.element.classList.remove('carousel-is-touchdrag');
+      // werror('Touch cancel');
+      _.element.classList.remove('carousel-is-touchdrag');
       slider.style.removeProperty('left');
-      // _.goto(_.currPos);
       _.play();
     }, false);
 
     const touchMove = (e) => {
-      const te   = getEvent(e);
-      const diff = te.clientX - x.x;
+      const te        = getEvent(e);
+      const diff      = te.clientX - x.x;
       const startDiff = te.clientX - x.startX;
-      const left = slider.offsetLeft;
+      const left      = slider.offsetLeft;
       x.x = te.clientX;
-      let nleft = left+(diff/2);
-
+      let nleft = left+(diff/(_.config.swipeRubberBand||1));
 
       if (Math.abs(startDiff) > _.config.touchthreshold) {
         e.preventDefault();
