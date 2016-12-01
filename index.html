@@ -36,8 +36,8 @@ be the purpose or goal either. If that&#39;s what you want then check out <a hre
 that the carousel wrapper must have a given height in some way.</p><hr><div class='scrollable'><h3 id='carousel-wrapper'>Carousel wrapper</h3><p>The outer most <code>div</code> element of the carousel that contain all carousel content</p><pre><code class='lang-html'>&lt;div class=&quot;carousel&quot;
      data-carousel-delay=&quot;8000&quot;
      data-carousel-indicators=&quot;&quot;
-     data-carousel-touch-threshold=&quot;80&quot;
-     data-carousel-rubberband-swipe=&quot;1.5&quot;&gt;</code></pre><table><thead><tr><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>data-carousel-delay</code> </td><td>Delay in milliseconds between rotations </td><td>10000</td></tr><tr><td><code>data-carousel-indicators</code> </td><td>Add indicators </td><td>No value</td></tr><tr><td><code>data-carousel-touch-threshold</code> </td><td>x distance to swipe before transition starts </td><td>100</td></tr><tr><td><code>data-carousel-rubberband-swipe</code> </td><td>Give a rubber band effect when swipeing. </td><td>1.5</td></tr></tbody></table><hr><h3 id='carousel-slider'>Carousel slider</h3><p>This is the first child of the <strong>Carousel wrapper</strong>. This element takes no data attributes</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-slider&quot;&gt;</code></pre><hr><h3 id='carousel-item'>Carousel item</h3><p>This container is the wrapper for every item in the carousel.</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-item&quot;
+     data-carousel-touch-threshold=&quot;40%&quot;
+     data-carousel-rubberband-swipe=&quot;1.5&quot;&gt;</code></pre><table><thead><tr><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>data-carousel-delay</code> </td><td>Delay in milliseconds between rotations </td><td>10000</td></tr><tr><td><code>data-carousel-indicators</code> </td><td>Add indicators </td><td>No value</td></tr><tr><td><code>data-carousel-touch-threshold</code> </td><td>x distance to swipe before transition starts. Can be either a fixed number (px) or in percent (%) </td><td>100 or 50%</td></tr><tr><td><code>data-carousel-rubberband-swipe</code> </td><td>Give a rubber band effect when swipeing. </td><td>1.5</td></tr></tbody></table><hr><h3 id='carousel-slider'>Carousel slider</h3><p>This is the first child of the <strong>Carousel wrapper</strong>. This element takes no data attributes</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-slider&quot;&gt;</code></pre><hr><h3 id='carousel-item'>Carousel item</h3><p>This container is the wrapper for every item in the carousel.</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-item&quot;
      data-carousel-href=&quot;http://domain.com/path/&quot;&gt;</code></pre><table><thead><tr><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>data-carousel-href</code> </td><td>URL to goto when the item is clicked </td><td>/internal/path</td></tr></tbody></table><hr><h3 id='carousel-item-text'>Carousel item text</h3><p>This container can contain any html.</p><pre><code class='lang-html'>&lt;div class=&quot;carousel-item-text&quot;&gt;</code></pre><hr><h3 id='carousel-item-image'>Carousel item image</h3><p>The image tag uses lazy loading so the best thing to do is to set the <code>src</code>
 attribute to point to an empty pixel image or something like that and use
 the <code>carousel-*</code> attributes for the real image sources. The <code>img</code> tag has support
@@ -80,7 +80,7 @@ the default source attribute.</p><pre><code class='lang-html'>&lt;img src=&quot;
           <!-- Begin Carousel -->
           <div class="carousel"
                data-carousel-delay="5000"
-               data-carousel-touch-threshold="220"
+               data-carousel-touch-threshold="50%"
                data-carousel-indicators="">
             <div class="carousel-slider">
 
@@ -181,7 +181,7 @@ the default source attribute.</p><pre><code class='lang-html'>&lt;img src=&quot;
   &lt;!-- Begin Carousel --&gt;
   &lt;div class=&quot;carousel&quot;
        data-carousel-delay=&quot;5000&quot;
-       data-carousel-touch-threshold=&quot;220&quot;
+       data-carousel-touch-threshold=&quot;50%&quot;
        data-carousel-indicators=&quot;&quot;&gt;
     &lt;div class=&quot;carousel-slider&quot;&gt;
 

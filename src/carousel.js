@@ -9,7 +9,7 @@
 (function(window, document, navigator) {
   'use strict';
 
-  // const werror = window.console.log;
+  const werror = window.console.log;
 
   // Storage for all created carousels.
   const carousels = [];
@@ -64,75 +64,86 @@
                    (navigator.maxTouchPoints   > 0) ||
                    (navigator.msMaxTouchPoints > 0));
 
-  // werror('Is touch: ', isTouch);
 
-  // Helper methods
-  const h = (function() {
-    return {
-      // Get elements by class name
-      getByClass: function(el, cls, one) {
-        const e = el.getElementsByClassName(cls);
+  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+   |                                                                         |
+   *                                Helpers                                  *
+   |                                                                         |
+   *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
-        if (one && e.length) {
+  const h = {
+    // Get elements by class name
+    getByClass: function(el, cls, one) {
+      const e = el.getElementsByClassName(cls);
+
+      if (one && e.length) {
+        return e[0];
+      }
+
+      return e.length && e || undefined;
+    },
+
+    // Get elements by tag name
+    getByTag: function(el, tag, one) {
+      const e = el.getElementsByTagName(tag);
+
+      if (one) {
+        if (e && e.length) {
           return e[0];
         }
+      }
 
-        return e.length && e || undefined;
-      },
+      return e;
+    },
 
-      // Get elements by tag name
-      getByTag: function(el, tag, one) {
-        const e = el.getElementsByTagName(tag);
+    // Create element
+    mkel: function(tag, attr) {
+      var e = document.createElement(tag);
 
-        if (one) {
-          if (e && e.length) {
-            return e[0];
-          }
-        }
-
-        return e;
-      },
-
-      // Create element
-      mkel: function(tag, attr) {
-        var e = document.createElement(tag);
-
-        if (attr) {
-          const keys = Object.keys(attr);
-          for (let i = 0; i < keys.length; i++) {
-            e.setAttribute(keys[i], attr[keys[i]]);
-          }
-        }
-
-        return e;
-      },
-
-      // Iterate over what and call cb on each iteration. If cb returns
-      // false the loop is escaped.
-      each: (what, cb) => {
-        let cbres;
-        for (let i = 0; i < what.length; i++) {
-          cbres = cb.call(this, what[i]);
-          if (cbres === false) {
-            break;
-          }
-        }
-      },
-
-      // Add media query to check in window.matchMedia
-      addMediaQuery: (mq) => {
-        if (!mediaQueries[mq]) {
-          mediaQueries[mq] = true;
-          window.matchMedia(mq).addListener(onMatchMediaChange);
+      if (attr) {
+        const keys = Object.keys(attr);
+        for (let i = 0; i < keys.length; i++) {
+          e.setAttribute(keys[i], attr[keys[i]]);
         }
       }
-    };
-  }());
 
-  // If touch device, add css class to the HTML element
-  // if (isTouch) {
-  //   h.getByTag(document, 'html', true).classList.add('carousel-is-touch');
-  // }
+      return e;
+    },
+
+    // Iterate over what and call cb on each iteration. If cb returns
+    // false the loop is escaped.
+    each: (what, cb) => {
+      let cbres;
+      for (let i = 0; i < what.length; i++) {
+        cbres = cb.call(this, what[i]);
+        if (cbres === false) {
+          break;
+        }
+      }
+    },
+
+    // Add media query to check in window.matchMedia
+    addMediaQuery: (mq) => {
+      if (!mediaQueries[mq]) {
+        mediaQueries[mq] = true;
+        window.matchMedia(mq).addListener(onMatchMediaChange);
+      }
+    },
+
+    // Calculate the swipe threshold in percent if that's requested
+    setPercentTouchThreshold: function (val, conf) {
+      const w = window.outerWidth;
+      const px = Math.abs(Math.round(w / (100/val)));
+      conf.touchthreshold = px;
+    }
+  };
+
+
+  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+   |                                                                         |
+   *                                Carousel                                 *
+   |                                                                         |
+   *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
   /*
     Creates a new Carousel object
@@ -169,12 +180,15 @@
     //  1 = yes
     this._hasmedia     = -1;
 
+    // If non-zero the swipe threshold is in percentage of the screen width
+    this._percentTouchThreshold = 0;
+
     if (isTouch) {
       this.element.classList.add('carousel-is-touch');
     }
 
     let items = h.getByClass(this.slider, 'carousel-item');
-    let pos = 0;
+    let pos = 0, tmp;
 
     h.each(items, el => {
       this.items.push(new Carousel.Item(el, pos++));
@@ -188,12 +202,20 @@
       _cfg.transition = _ds.carouselTransition;
     }
 
-    if (_ds.carouselTouchThreshold) {
-      _cfg.touchthreshold = parseInt(_ds.carouselTouchThreshold, 10);
+    if (isTouch && _ds.carouselTouchThreshold) {
+      tmp = _ds.carouselTouchThreshold;
+      if (tmp[tmp.length - 1] === '%') {
+        this._percentTouchThreshold = parseInt(tmp, 10);
+        h.setPercentTouchThreshold(this._percentTouchThreshold, _cfg);
+      }
+      else {
+        _cfg.touchthreshold = parseInt(tmp, 10);
+      }
     }
 
     if (_ds.carouselRubberbandSwipe) {
-      let tmp = parseFloat(_ds.carouselRubberbandSwipe, 10);
+      tmp = parseFloat(_ds.carouselRubberbandSwipe, 10);
+
       if (tmp > 1) {
         _cfg.swipeRubberBand = tmp;
       }
@@ -215,6 +237,9 @@
     this.play();
   };
 
+  /*
+    Toggle add/remove the animate class on the slider
+  */
   Carousel.prototype.sliderAnimate = function(on) {
     if (on) {
       this.slider.classList.add('animate');
@@ -224,6 +249,9 @@
     }
   };
 
+  /*
+    Start the auto play
+  */
   Carousel.prototype.play = function() {
     if (this.ivalId) {
       clearTimeout(this.ivalId);
@@ -237,11 +265,17 @@
     }, this.config.delay);
   };
 
+  /*
+    Pause the auto play
+  */
   Carousel.prototype.pause = function() {
     clearTimeout(this.ivalId);
     this.sliderAnimate(false);
   };
 
+  /*
+    Move to the next item
+  */
   Carousel.prototype.next = function() {
     this.currPos += 1;
     if (this.currPos >= this.items.length) {
@@ -251,6 +285,9 @@
     this.goto(this.currPos);
   };
 
+  /*
+    Goto the item at @pos
+  */
   Carousel.prototype.goto = function(pos) {
     if (pos < 0) {
       pos = this.items.length - 1;
@@ -275,6 +312,10 @@
     this.play();
   };
 
+  /*
+    Check if any of the images in the items has multiple images for different
+    device widths
+  */
   Carousel.prototype.hasMediaQueries = function() {
     if (this._hasmedia !== -1) {
       return !!this._hasmedia;
@@ -295,8 +336,14 @@
   };
 
 
+  /*
+    Media has changes, change images in the items if neccessary
+  */
   Carousel.prototype.changeMedia = function(size) {
-    // werror('Carousel.changeMedia(', size, ')');
+    if (this._percentTouchThreshold) {
+      h.setPercentTouchThreshold(this._percentTouchThreshold, this.config);
+    }
+
     h.each(this.items, item => {
       if (item.hasMediaQueries) {
         item.changeMedia(size);
@@ -305,6 +352,9 @@
   };
 
 
+  /*
+    Load the image in item @pos if it's not already loaded
+  */
   Carousel.prototype._loadIfNecessary = function(pos) {
     if (pos >= 0 && pos < this.items.length) {
       if (!this.items[pos].isLoaded) {
@@ -315,6 +365,9 @@
   };
 
 
+  /*
+    Setup touch events
+  */
   Carousel.prototype._setupTouchEvents = function() {
     // Used to store the touch start/drag positions
     const x = {
@@ -356,6 +409,7 @@
       }, 1000);
 
 
+      // The rotation has occured in touchmove so abort.
       if (abort) {
         abort = false;
         return;
@@ -424,6 +478,9 @@
     setTouchMove();
   };
 
+  /*
+    Create the indicators
+  */
   Carousel.prototype._makeIndicators = function() {
     if (!this.useIndicators || this.items.length < 2) {
       return;
@@ -448,6 +505,9 @@
     this.indicators = inds;
   };
 
+  /*
+    Activate the indicator at position @index
+  */
   Carousel.prototype.setIndicator = function(index) {
     if (!this.useIndicators || this.items.length < 2) {
       return;
@@ -466,6 +526,11 @@
     this.indicators[index].activate();
   };
 
+  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+   |                                                                         |
+   *                            Carousel.Item                                *
+   |                                                                         |
+   *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
   Carousel.Item = function(el, pos) {
     this.mediaQueries    = {};
@@ -508,6 +573,10 @@
     this.img.style.display = 'none';
   };
 
+
+  /*
+    Load the image matching the media size @size
+  */
   Carousel.Item.prototype.changeMedia = function(size) {
     const src = this.mediaQueries[size];
     this.src = src || this.defaultSrc;
@@ -517,6 +586,10 @@
     }
   };
 
+
+  /*
+    Collect eventual multiple media size image sources
+  */
   Carousel.Item.prototype._collectMediaSizes = function() {
     let m, sizes = [], sizesrc = {};
 
@@ -549,10 +622,17 @@
     }
   };
 
+  /*
+    Load the current image source.
+  */
   Carousel.Item.prototype.load = function() {
     this._setSrc(this.src);
   };
 
+  /*
+    Set the src attribute to @src and add it as background image on the
+    item when the image is loaded.
+  */
   Carousel.Item.prototype._setSrc = function(src) {
     this.img.setAttribute('src', src);
     this.img.onload = () => {
@@ -561,6 +641,11 @@
     };
   };
 
+  /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
+   |                                                                         |
+   *                          Carousel.Indicator                             *
+   |                                                                         |
+   *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
   Carousel.Indicator = function(owner, index) {
     const _ = this;
@@ -575,10 +660,16 @@
     }, true);
   };
 
+  /*
+    Activate this indicator
+  */
   Carousel.Indicator.prototype.activate = function() {
     this.btn.classList.add('carousel-indicator-active');
   };
 
+  /*
+    Deactivate this indicator
+  */
   Carousel.Indicator.prototype.deActivate = function() {
     this.btn.classList.remove('carousel-indicator-active');
   };
