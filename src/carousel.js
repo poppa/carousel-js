@@ -131,6 +131,7 @@
     },
 
     // Calculate the swipe threshold in percent if that's requested
+    // FIXME: This does not work as expected in an actual iPhone.
     setPercentTouchThreshold: function (val, conf) {
       const w = window.outerWidth;
       const px = Math.abs(Math.round(w / (100/val)));
@@ -539,10 +540,10 @@
     this.element         = el;
     this.isLoaded        = false;
     this.src             = null;
-    this.defaultSrc      = this.img.dataset.carouselSrc;
     this.mediaSizes      = null;
     this.href            = el.dataset.carouselHref;
     this.position        = pos;
+    this.hasImg          = this.img.length === undefined;
 
     this.element.setAttribute('data-carousel-position', pos);
 
@@ -553,24 +554,27 @@
       }, true);
     }
 
-    this._collectMediaSizes();
+    if (this.hasImg) {
+      this.defaultSrc = this.img.dataset.carouselSrc;
+      this._collectMediaSizes();
 
-    const keys = Object.keys(this.mediaQueries).sort();
-    let k;
+      const keys = Object.keys(this.mediaQueries).sort();
+      let k;
 
-    for (let i = 0; i < keys.length; i++) {
-      k = keys[i];
+      for (let i = 0; i < keys.length; i++) {
+        k = keys[i];
 
-      if (window.matchMedia(k).matches) {
-        this.src = this.mediaQueries[k];
+        if (window.matchMedia(k).matches) {
+          this.src = this.mediaQueries[k];
+        }
       }
-    }
 
-    if (!this.src) {
-      this.src = this.img.dataset.carouselSrc;
-    }
+      if (!this.src) {
+        this.src = this.img.dataset.carouselSrc;
+      }
 
-    this.img.style.display = 'none';
+      this.img.style.display = 'none';
+    }
   };
 
 
@@ -626,7 +630,9 @@
     Load the current image source.
   */
   Carousel.Item.prototype.load = function() {
-    this._setSrc(this.src);
+    if (this.hasImg) {
+      this._setSrc(this.src);
+    }
   };
 
   /*
@@ -634,11 +640,13 @@
     item when the image is loaded.
   */
   Carousel.Item.prototype._setSrc = function(src) {
-    this.img.setAttribute('src', src);
-    this.img.onload = () => {
-      this.element.style.backgroundImage = `url(${src})`;
-      this.isLoaded = true;
-    };
+    if (this.hasImg) {
+      this.img.setAttribute('src', src);
+      this.img.onload = () => {
+        this.element.style.backgroundImage = `url(${src})`;
+        this.isLoaded = true;
+      };
+    }
   };
 
   /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*

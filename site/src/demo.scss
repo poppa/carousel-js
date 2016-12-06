@@ -188,8 +188,13 @@ header {
 
 }
 
-.intro {
-
+.arbitrary-content {
+  // width: auto;
+  height: 100%;
+  padding: $site-padding;
+  color: white;
+  background: linear-gradient(to bottom, #db2b2b 0%,#349fbc 100%);
+  position: relative;
 }
 
 code {
