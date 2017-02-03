@@ -107,6 +107,24 @@ the default source attribute.
 | `data-carousel-src`             | Default image src                            | /images/img1.jpg |
 | `data-carousel-mq-(n)`          | Alternative image sources. `(n)` is an arbitrary number which will be set to the media directive `@media (min-width: (n)px)`                            | `data-carousel-mq-376='larger-than-iphone6-image.jpg'` |
 
+### The `Carousel` global object
+
+This object has one static property (`null` by default) that if set with a 
+function that function will be called when a slider item is clicked (if the 
+`data-carousel-href` attribute is used on the item). 
+
+```js
+Carousel.clickBack = function(item) {
+  // Check something....
+  // Return false if you want to abort the click
+  // For instance:
+  if (item.href.indexOf('http:') > -1) {
+    window.top.location.href = item.href;
+    return false;
+  }
+}
+```
+
 <!-- endcatch -->
 
 See the example below for a full implementation

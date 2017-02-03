@@ -14,6 +14,12 @@
     <script src="site/build/site.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script>if (hljs) hljs.initHighlightingOnLoad();</script>
+    <script>
+    Carousel.clickBack = function(item) {
+      console.log('Clickback', item);
+      return false;
+    };
+    </script>
   </head>
   <body>
     <header>
@@ -50,7 +56,17 @@ so give the mobile version as value to the <code>data-carousel-src</code> attrib
 the default source attribute.</p><pre><code class='lang-html'>&lt;img src=&quot;empty/pixel.png&quot; alt=&quot;Image description&quot;
      data-carousel-src=&quot;real-image.jpg&quot;
      data-carousel-mq-414=&quot;real-tablet-image.jpg&quot;
-     data-carousel-mq-768=&quot;real-desktop-image.jpg&quot;&gt;</code></pre><table><thead><tr><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>data-carousel-src</code> </td><td>Default image src </td><td>/images/img1.jpg</td></tr><tr><td><code>data-carousel-mq-(n)</code> </td><td>Alternative image sources. <code>(n)</code> is an arbitrary number which will be set to the media directive <code>@media (min-width: (n)px)</code> </td><td><code>data-carousel-mq-376=&#39;larger-than-iphone6-image.jpg&#39;</code></td></tr></tbody></table></div></div></div>
+     data-carousel-mq-768=&quot;real-desktop-image.jpg&quot;&gt;</code></pre><table><thead><tr><th>Attribute </th><th>Description </th><th>Example</th></tr></thead><tbody><tr><td><code>data-carousel-src</code> </td><td>Default image src </td><td>/images/img1.jpg</td></tr><tr><td><code>data-carousel-mq-(n)</code> </td><td>Alternative image sources. <code>(n)</code> is an arbitrary number which will be set to the media directive <code>@media (min-width: (n)px)</code> </td><td><code>data-carousel-mq-376=&#39;larger-than-iphone6-image.jpg&#39;</code></td></tr></tbody></table><h3 id='the-carousel-global-object'>The <code>Carousel</code> global object</h3><p>This object has one static property (<code>null</code> by default) that if set with a 
+function that function will be called when a slider item is clicked (if the 
+<code>data-carousel-href</code> attribute is used on the item). </p><pre><code class='lang-js'>Carousel.clickBack = function(item) {
+  // Check something....
+  // Return false if you want to abort the click
+  // For instance:
+  if (item.href.indexOf(&#39;http:&#39;) &gt; -1) {
+    window.top.location.href = item.href;
+    return false;
+  }
+}</code></pre></div></div></div>
     <div class="container p1">
       <div class="site-width">
         <h2>Full width <small> with relative height and font size</small></h2>

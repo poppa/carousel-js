@@ -527,6 +527,17 @@
     this.indicators[index].activate();
   };
 
+  /*
+    If defined and a function it will be called on eventual clicks.
+    Return false to abort click.
+
+    Carousel.clickBack = function(item) {
+      // To something...
+      return false;
+    };
+  */
+  Carousel.clickBack = null;
+
   /*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*
    |                                                                         |
    *                            Carousel.Item                                *
@@ -550,6 +561,12 @@
     if (this.href) {
       el.addEventListener('click', (e) => {
         e.preventDefault();
+        if (typeof Carousel.clickBack === 'function') {
+          const res = Carousel.clickBack(this);
+          if (res === false) {
+            return;
+          }
+        }
         document.location.href = this.href;
       }, true);
     }
@@ -691,5 +708,7 @@
       });
     }
   });
+
+  window.Carousel = Carousel;
 
 }(window, document, window.navigator));
