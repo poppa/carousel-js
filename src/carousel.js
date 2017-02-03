@@ -235,7 +235,9 @@
       this._setupTouchEvents();
     }
 
-    this.play();
+    if (this.items.length > 1) {
+      this.play();
+    }
   };
 
   /*
