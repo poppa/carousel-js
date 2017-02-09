@@ -184,6 +184,8 @@
     // If non-zero the swipe threshold is in percentage of the screen width
     this._percentTouchThreshold = 0;
 
+    this.staticTextElem = h.getByClass(el, 'carousel-static-text', true);
+
     if (isTouch) {
       this.element.classList.add('carousel-is-touch');
     }
@@ -192,7 +194,7 @@
     let pos = 0, tmp;
 
     h.each(items, el => {
-      this.items.push(new Carousel.Item(el, pos++));
+      this.items.push(new Carousel.Item(el, pos++, this));
     });
 
     if (_ds.carouselDelay) {
@@ -224,6 +226,7 @@
 
     if (this.items.length) {
       this.items[0].load();
+      this.items[0].activate();
     }
 
     if (this.items.length > 1) {
@@ -306,12 +309,12 @@
     clearTimeout(this.ivalId);
 
     this.sliderAnimate(true);
-
     this._loadIfNecessary(pos);
     this._loadIfNecessary(next_prev);
     this.setIndicator(pos);
     this.slider.dataset.carouselPos = pos;
     this.currPos = pos;
+    this.items[pos].activate();
     this.play();
   };
 
@@ -546,7 +549,7 @@
    |                                                                         |
    *-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*/
 
-  Carousel.Item = function(el, pos) {
+  Carousel.Item = function(el, pos, owner) {
     this.mediaQueries    = {};
     this.hasMediaQueries = false;
     this.img             = h.getByTag(el, 'img', true);
@@ -557,6 +560,7 @@
     this.href            = el.dataset.carouselHref;
     this.position        = pos;
     this.hasImg          = this.img.length === undefined;
+    this.carousel        = owner;
 
     this.element.setAttribute('data-carousel-position', pos);
 
@@ -596,6 +600,25 @@
     }
   };
 
+  Carousel.Item.prototype.activate = function() {
+    const st = this.carousel.staticTextElem;
+    if (st) {
+      const cb = () => {
+        document.location.href = this.href;
+      };
+      if (st._cb) {
+        st.removeEventListener('click', st._cb);
+      }
+      if (this.href) {
+        st.addEventListener('click', cb, false);
+        st._cb = cb;
+        st.style.cursor = 'pointer';
+      }
+      else {
+        st.style.cursor = 'default';
+      }
+    }
+  };
 
   /*
     Load the image matching the media size @size

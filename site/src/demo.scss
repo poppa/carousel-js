@@ -110,6 +110,10 @@ header {
 
   h2 {
     margin-bottom: $site-padding/2;
+
+    & + p {
+      margin-top: -($site-padding/2);
+    }
   }
 
   > div {
@@ -143,7 +147,8 @@ header {
     }
   }
 
-  &.p2 {
+  &.p2,
+  &.p4 {
     background-color: #555;
     color: #ccc;
 
@@ -185,6 +190,7 @@ header {
       height: 450px;
     }
   }
+
 
 }
 

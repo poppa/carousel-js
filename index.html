@@ -14,12 +14,6 @@
     <script src="site/build/site.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js"></script>
     <script>if (hljs) hljs.initHighlightingOnLoad();</script>
-    <script>
-    Carousel.clickBack = function(item) {
-      console.log('Clickback', item);
-      return false;
-    };
-    </script>
   </head>
   <body>
     <header>
@@ -686,6 +680,170 @@ function that function will be called when a slider item is clicked (if the
       margin: 0 auto;
       max-width: 720px;
       height: 450px;
+    }
+    </style>
+    <!-- endcatch -->
+    <div class="container p4">
+      <div class="site-width">
+        <h2>Same as example 2 <small>but with static text</small></h2>
+        <p>Various dynamic metrics with some media directives.</p>
+        
+    <ul role='tablist'>
+      <li class='active'>
+        <button id='tab-example-4' role='tab'
+                aria-controls='tab-view-example-4'
+                aria-selected='true'>Example</button>
+      </li>
+      <li>
+        <button id='tab-code-4' role='tab'
+                aria-controls='tab-view-code-4'
+                aria-selected='false'>HTML</button>
+      </li>
+      <li>
+        <button id='tab-css-4' role='tab'
+                aria-controls='tab-view-css-4'
+                aria-selected='false'>CSS</button>
+      </li></ul>
+    <div aria-labelledby='tab-example-4'
+         id='tab-view-example-4'
+         role='tabpanel' aria-hidden='false'>
+        <!-- catch(source) -->
+        <div class="outer-jsc">
+          <div class="carousel"
+               data-carousel-delay="6000"
+               data-carousel-indicators=""
+               data-carousel-rubberband-swipe="1.5">
+            <div class="carousel-static-text">
+              <h3>Static text</h3>
+              <p>This text should overlay all slider items.</p>
+            </div>
+            <div class="carousel-slider">
+              <div class="carousel-item" data-carousel-href="http://roxen.com">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-1.png"
+                     alt="Image 1">
+              </div>
+              <div class="carousel-item" data-carousel-href="http://download.roxen.com">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-2.png"
+                     alt="Image 2">
+              </div>
+              <div class="carousel-item">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-3.png"
+                     alt="Image 3">
+              </div>
+              <div class="carousel-item">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-4.png"
+                     alt="Image 4">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- endcatch -->
+        </div>
+    <div aria-labelledby='tab-code-4'
+         id='tab-view-code-4'
+         role='tabpanel' aria-hidden='true'><pre><code class='html'>&lt;div class=&quot;outer-jsc&quot;&gt;
+  &lt;div class=&quot;carousel&quot;
+       data-carousel-delay=&quot;6000&quot;
+       data-carousel-indicators=&quot;&quot;
+       data-carousel-rubberband-swipe=&quot;1.5&quot;&gt;
+    &lt;div class=&quot;carousel-static-text&quot;&gt;
+      &lt;h3&gt;Static text&lt;/h3&gt;
+      &lt;p&gt;This text should overlay all slider items.&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class=&quot;carousel-slider&quot;&gt;
+      &lt;div class=&quot;carousel-item&quot; data-carousel-href=&quot;http://roxen.com&quot;&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-1.png&quot;
+             alt=&quot;Image 1&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;carousel-item&quot; data-carousel-href=&quot;http://download.roxen.com&quot;&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-2.png&quot;
+             alt=&quot;Image 2&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;carousel-item&quot;&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-3.png&quot;
+             alt=&quot;Image 3&quot;&gt;
+      &lt;/div&gt;
+      &lt;div class=&quot;carousel-item&quot;&gt;
+        &lt;img src=&quot;images/transparent-pixel.gif&quot;
+             data-carousel-src=&quot;images/img-desktop-4.png&quot;
+             alt=&quot;Image 4&quot;&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre></div>
+    <div aria-labelledby='tab-css-4'
+       id='tab-view-css-4'
+       role='tabpanel' aria-hidden='true'><pre><code class='css'>/* SCSS */
+.outer-jsc {
+  position: relative;
+  border: 1px solid #fff;
+  margin: 0 auto;
+  width: 100%;
+  height: 50vw;
+  max-width: 900px;
+  max-height: 400px;
+
+  @media screen and (min-width: 768px) {
+    width: 50vw;
+    height: 30vw;
+  }
+}
+
+.carousel-item-text {
+  h3 { font-size: 1.8rem; }
+  p { font-size: 1.4rem; }
+
+  @media screen and (min-width: 767px) {
+    h3 { font-size: 2.4vw; }
+    p { font-size: 1.6vw; }
+  }
+
+  @media screen and (min-width: 1160px) {
+    h3 { font-size: 2.4rem; }
+    p { font-size: 1.6rem; }
+  }
+}</code></pre></div>
+      </div>
+    </div>
+
+    <!-- catch(css) -->
+    <style type="text/x-example">
+    /* SCSS */
+    .outer-jsc {
+      position: relative;
+      border: 1px solid #fff;
+      margin: 0 auto;
+      width: 100%;
+      height: 50vw;
+      max-width: 900px;
+      max-height: 400px;
+
+      @media screen and (min-width: 768px) {
+        width: 50vw;
+        height: 30vw;
+      }
+    }
+
+    .carousel-item-text {
+      h3 { font-size: 1.8rem; }
+      p { font-size: 1.4rem; }
+
+      @media screen and (min-width: 767px) {
+        h3 { font-size: 2.4vw; }
+        p { font-size: 1.6vw; }
+      }
+
+      @media screen and (min-width: 1160px) {
+        h3 { font-size: 2.4rem; }
+        p { font-size: 1.6rem; }
+      }
     }
     </style>
     <!-- endcatch -->

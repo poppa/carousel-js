@@ -1,0 +1,78 @@
+    <div class="container p4">
+      <div class="site-width">
+        <h2>Same as example 2 <small>but with static text</small></h2>
+        <p>Various dynamic metrics with some media directives.</p>
+        <!-- catch(tab) -->
+        <!-- catch(source) -->
+        <div class="outer-jsc">
+          <div class="carousel"
+               data-carousel-delay="6000"
+               data-carousel-indicators=""
+               data-carousel-rubberband-swipe="1.5">
+            <div class="carousel-static-text">
+              <h3>Static text</h3>
+              <p>This text should overlay all slider items.</p>
+            </div>
+            <div class="carousel-slider">
+              <div class="carousel-item" data-carousel-href="http://roxen.com">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-1.png"
+                     alt="Image 1">
+              </div>
+              <div class="carousel-item" data-carousel-href="http://download.roxen.com">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-2.png"
+                     alt="Image 2">
+              </div>
+              <div class="carousel-item">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-3.png"
+                     alt="Image 3">
+              </div>
+              <div class="carousel-item">
+                <img src="images/transparent-pixel.gif"
+                     data-carousel-src="images/img-desktop-4.png"
+                     alt="Image 4">
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- endcatch -->
+        <!-- endcatch -->
+      </div>
+    </div>
+
+    <!-- catch(css) -->
+    <style type="text/x-example">
+    /* SCSS */
+    .outer-jsc {
+      position: relative;
+      border: 1px solid #fff;
+      margin: 0 auto;
+      width: 100%;
+      height: 50vw;
+      max-width: 900px;
+      max-height: 400px;
+
+      @media screen and (min-width: 768px) {
+        width: 50vw;
+        height: 30vw;
+      }
+    }
+
+    .carousel-item-text {
+      h3 { font-size: 1.8rem; }
+      p { font-size: 1.4rem; }
+
+      @media screen and (min-width: 767px) {
+        h3 { font-size: 2.4vw; }
+        p { font-size: 1.6vw; }
+      }
+
+      @media screen and (min-width: 1160px) {
+        h3 { font-size: 2.4rem; }
+        p { font-size: 1.6rem; }
+      }
+    }
+    </style>
+    <!-- endcatch -->

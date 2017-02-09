@@ -81,6 +81,7 @@ $carousel-indicator-size: 12px;
     width: 100%;
     background: rgba(0, 0, 0, .0);
     text-align: center;
+    z-index: 2;
   }
 
   &-is-touch {
@@ -131,6 +132,24 @@ $carousel-indicator-size: 12px;
       background:    rgba(0, 0, 0, .7);
       opacity:       0;
       transition:    opacity .3s ease-out;
+    }
+  }
+
+  .carousel-static-text {
+    position: absolute;
+    z-index: 1;
+    background: rgba(0, 0, 0, .3);
+    cursor: default;
+    padding: $carousel-text-padding;
+    color: white;
+    height: 100%;
+    max-width: 50%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    h2, h3, p {
+      margin: 0;
     }
   }
 }
