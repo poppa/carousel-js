@@ -4,13 +4,14 @@
 // jshint esversion: 6, node: true
 'use strict';
 const
-  gulp    = require('gulp'),
-  sass    = require('gulp-sass'),
-  plumber = require('gulp-plumber'),
-  newer   = require('gulp-newer'),
-  rename  = require('gulp-rename'),
-  uglify  = require('gulp-uglify'),
-  babel   = require('gulp-babel');
+  gulp       = require('gulp'),
+  sass       = require('gulp-sass'),
+  plumber    = require('gulp-plumber'),
+  newer      = require('gulp-newer'),
+  rename     = require('gulp-rename'),
+  uglify     = require('gulp-uglify'),
+  babel      = require('gulp-babel'),
+  sourcemaps = require('gulp-sourcemaps');
 
 const doCompress = true;
 
@@ -33,9 +34,11 @@ gulp.task('js', [], () => {
   return gulp.src('src/carousel.js')
     .pipe(plumber())
     .pipe(newer('build'))
-    .pipe(babel({ presets: ['es2015'] }))
-    .pipe(uglify())
-    .pipe(rename({ suffix: '.min' }))
+    .pipe(sourcemaps.init())
+      .pipe(babel({ presets: ['es2015'] }))
+      .pipe(uglify())
+      .pipe(rename({ suffix: '.min' }))
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('build'));
 });
 
@@ -43,9 +46,11 @@ gulp.task('site-js', [], () => {
   return gulp.src([ 'site/src/*.js' ])
     .pipe(plumber())
     .pipe(newer('site/build'))
-    .pipe(babel({ presets: ['es2015'] }))
-    .pipe(uglify())
-    .pipe(rename({ suffix: '.min' }))
+    .pipe(sourcemaps.init())
+      .pipe(babel({ presets: ['es2015'] }))
+      .pipe(uglify())
+      .pipe(rename({ suffix: '.min' }))
+    .pipe(sourcemaps.write('.'))
     .pipe(gulp.dest('site/build'));
 });
 
