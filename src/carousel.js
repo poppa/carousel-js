@@ -734,6 +734,7 @@
     }
   });
 
+  Carousel.carousels = carousels;
   window.Carousel = Carousel;
 
 }(window, document, window.navigator));
