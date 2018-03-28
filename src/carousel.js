@@ -3,13 +3,15 @@
 */
 
 // jshint esversion: 6, undef: true, unused: true
-/* global window, document, setTimeout, clearTimeout, requestAnimationFrame */
+/* global window, document, setTimeout, clearTimeout, requestAnimationFrame,
+          console
+*/
 
 
 (function(window, document, navigator) {
   'use strict';
 
-  const werror = window.console.log;
+  // const werror = window.console.log;
 
   // Storage for all created carousels.
   const carousels = [];
@@ -25,7 +27,6 @@
   let mmcival, nomatchival;
   const onMatchMediaChange = function(e) {
     if (e.matches) {
-      // werror('>>> Media change: ', e.media);
       h.each(carousels, c => {
         if (c.hasMediaQueries()) {
           if (mmcival) {
@@ -37,10 +38,10 @@
           }
 
           mmcival = setTimeout(() => {
-            c.changeMedia(e.media);
             mmcival = null;
             nomatchival = null;
-          }, 10);
+            c.changeMedia(e.media);
+          }, 5);
         }
       });
     }
@@ -56,7 +57,7 @@
         });
         mmcival = null;
         nomatchival = null;
-      }, 10);
+      }, 5);
     }
   };
 
@@ -136,6 +137,49 @@
       const w = window.outerWidth;
       const px = Math.abs(Math.round(w / (100/val)));
       conf.touchthreshold = px;
+    },
+
+    // Same as Element.closest, which is used if available.
+    closest: (node, selector) => {
+      if (node.closest) {
+        return node.closest(selector);
+      }
+
+      try {
+        do {
+          node = node.parentNode;
+
+          if (node) {
+            const test = node.querySelector(selector);
+
+            if (test) {
+              return test;
+            }
+          }
+        } while (node);
+      }
+      catch (e) {
+        console.error(e);
+        return null;
+      }
+    },
+
+    debounce: (f, w, i) => {
+      let t;
+      return function() {
+        let args = arguments;
+        let later = () => {
+          t = null;
+          if (!i) f.apply(this, args);
+        };
+
+        let cn = i && !t;
+        clearTimeout(t);
+        t = setTimeout(later, w);
+        if (cn) {
+          f.apply(this, args);
+        }
+      };
     }
   };
 
@@ -184,6 +228,12 @@
     // If non-zero the swipe threshold is in percentage of the screen width
     this._percentTouchThreshold = 0;
 
+    this.wrapper = el.dataset.carouselWrapper;
+
+    if (this.wrapper) {
+      this.wrapper = h.closest(el, this.wrapper);
+    }
+
     this.staticTextElem = h.getByClass(el, 'carousel-static-text', true);
 
     if (isTouch) {
@@ -196,6 +246,26 @@
     h.each(items, el => {
       this.items.push(new Carousel.Item(el, pos++, this));
     });
+
+    if (this.wrapper) {
+      let addResize = false;
+      for (let i = 0; i < this.items.length; i++) {
+        if (this.items[i].autoHeight) {
+          addResize = true;
+          break;
+        }
+      }
+
+      if (addResize) {
+        window.addEventListener(
+          'resize',
+          h.debounce(() => {
+            this.setAutoHeight();
+          }, 100),
+          true
+        );
+      }
+    }
 
     if (_ds.carouselDelay) {
       _cfg.delay = parseInt(_ds.carouselDelay, 10);
@@ -255,6 +325,10 @@
     }
   };
 
+  Carousel.prototype.currentItem = function() {
+    return this.items[this.currPos];
+  };
+
   /*
     Start the auto play
   */
@@ -303,8 +377,6 @@
     }
 
     const next_prev = pos < this.currPos ? pos - 1 : pos + 1;
-
-    // werror('curr', pos, ' next', next_prev);
 
     clearTimeout(this.ivalId);
 
@@ -355,6 +427,8 @@
         item.changeMedia(size);
       }
     });
+
+    this.setAutoHeight();
   };
 
 
@@ -364,7 +438,6 @@
   Carousel.prototype._loadIfNecessary = function(pos) {
     if (pos >= 0 && pos < this.items.length) {
       if (!this.items[pos].isLoaded) {
-        // werror('_loadIfNecessary(', pos, this.currPos, ')');
         this.items[pos].load();
       }
     }
@@ -436,7 +509,6 @@
     }, false);
 
     slider.addEventListener('touchcancel', () => {
-      // werror('Touch cancel');
       _.element.classList.remove('carousel-is-touchdrag');
       slider.style.removeProperty('left');
       _.play();
@@ -532,6 +604,43 @@
     this.indicators[index].activate();
   };
 
+  Carousel.prototype.setAutoHeight = function() {
+    if (this.wrapper) {
+      const ci = this.currentItem();
+
+      if (ci.autoHeight) {
+        const calcHeight = () => {
+          const tmp = h.mkel('img', { src: ci.img.src, width: ci.img.width });
+          tmp.style.visibility = 'hidden';
+          tmp.style.position = 'absolute';
+          document.body.appendChild(tmp);
+          const height = tmp.height;
+          document.body.removeChild(tmp);
+          return height;
+        };
+
+        const wait = () => {
+          if (ci.isLoaded) {
+            const height = calcHeight();
+            this.wrapper.classList.add('carousel-auto-height');
+            this.wrapper.style.height = height + 'px';
+            this.wrapper.style.minHeight = '0px';
+          }
+          else {
+            requestAnimationFrame(wait);
+          }
+        };
+
+        wait();
+      }
+      else  {
+        this.wrapper.classList.remove('carousel-auto-height');
+        this.wrapper.style.removeProperty('height');
+        this.wrapper.style.removeProperty('min-height');
+      }
+    }
+  };
+
   /*
     If defined and a function it will be called on eventual clicks.
     Return false to abort click.
@@ -556,13 +665,23 @@
     this.element         = el;
     this.isLoaded        = false;
     this.src             = null;
+    this.credit          = null;
     this.mediaSizes      = null;
     this.href            = el.dataset.carouselHref;
     this.position        = pos;
     this.hasImg          = this.img.length === undefined;
     this.carousel        = owner;
+    this.keepImg         = el.dataset.carouselKeepImg !== undefined;
+    this.autoHeight      = el.dataset.carouselAutoHeight !== undefined;
+    this.creditElem      = h.mkel('div', { class: 'carousel-photo-credit ' +
+                                                  'carousel-hidden' });
+
+    if (this.keepImg) {
+      this.element.classList.add('carousel-item-keep-img');
+    }
 
     this.element.setAttribute('data-carousel-position', pos);
+    this.element.appendChild(this.creditElem);
 
     if (this.href) {
       el.addEventListener('click', (e) => {
@@ -579,6 +698,7 @@
 
     if (this.hasImg) {
       this.defaultSrc = this.img.dataset.carouselSrc;
+      this.defaultCred = this.img.dataset.carouselPhotoCredit;
       this._collectMediaSizes();
 
       const keys = Object.keys(this.mediaQueries).sort();
@@ -589,18 +709,30 @@
 
         if (window.matchMedia(k).matches) {
           this.src = this.mediaQueries[k];
+          if (typeof this.src === 'object') {
+            this.credit = this.src.credit;
+            this.src = this.src.img;
+          }
         }
       }
 
       if (!this.src) {
-        this.src = this.img.dataset.carouselSrc;
+        this.src = this.defaultSrc;
       }
 
-      this.img.style.display = 'none';
+      if (!this.credit) {
+        this.credit = this.defaultCred;
+      }
+
+      if (!this.keepImg) {
+        this.img.style.display = 'none';
+      }
     }
   };
 
   Carousel.Item.prototype.activate = function() {
+    this.carousel.setAutoHeight();
+
     const st = this.carousel.staticTextElem;
     if (st) {
       const cb = () => {
@@ -624,8 +756,16 @@
     Load the image matching the media size @size
   */
   Carousel.Item.prototype.changeMedia = function(size) {
-    const src = this.mediaQueries[size];
-    this.src = src || this.defaultSrc;
+    const src = this.mediaQueries[size] || this.defaultSrc;
+
+    if (typeof src === 'object') {
+      this.src = src.img || this.defaultSrc;
+      this.credit = src.credit || this.defaultCred;
+    }
+    else {
+      this.src = src;
+      this.credit = this.defaultCred;
+    }
 
     if (this.isLoaded) {
       this.load();
@@ -637,30 +777,47 @@
     Collect eventual multiple media size image sources
   */
   Carousel.Item.prototype._collectMediaSizes = function() {
-    let m, sizes = [], sizesrc = {};
+    let m, sizes = [], sizesrc = {}, cred = {};
 
     for (let a in this.img.dataset){
-      m = a.match(/Mq-(\d+)$/);
+      m = a.match(/(?:carousel)Mq-(\d+)$/);
 
       if (m) {
         this.hasMediaQueries = true;
-        m = parseInt(m[1]);
+        m = parseInt(m[1], 10);
         sizes.push(m);
         sizesrc[m] = this.img.dataset[a];
+      }
+      else {
+        m = a.match(/(?:carouselPhotoCredit)Mq-(\d+)$/);
+        if (m) {
+          m = parseInt(m[1], 10);
+          cred[m] = this.img.dataset[a];
+        }
       }
     }
 
     let slen = sizes.length;
 
     if (slen) {
-      let a, str;
+      let a, str, val;
       sizes.sort();
 
       for (let i = 0; i < slen; i++) {
         a   = sizes[i];
         str = `(min-width: ${a+1}px)`;
 
-        this.mediaQueries[str] = sizesrc[a];
+        if (i + 1 < sizes.length) {
+          str = `(max-width: ${sizes[i+1]}px) and ` + str;
+        }
+
+        val = sizesrc[a];
+
+        if (cred[a]) {
+          val = { img: val, credit: cred[a] };
+        }
+
+        this.mediaQueries[str] = val;
         h.addMediaQuery(str);
       }
 
@@ -683,11 +840,29 @@
   */
   Carousel.Item.prototype._setSrc = function(src) {
     if (this.hasImg) {
-      this.img.setAttribute('src', src);
+      this.isLoaded = false;
+      let imgsrc = src;
+
+      if (typeof src === 'object') {
+        imgsrc = src.img;
+      }
+
+      this.img.setAttribute('src', imgsrc);
       this.img.onload = () => {
-        this.element.style.backgroundImage = `url(${src})`;
+        if (!this.keepImg) {
+          this.element.style.backgroundImage = `url(${imgsrc})`;
+        }
         this.isLoaded = true;
       };
+
+      if (this.credit) {
+        this.creditElem.textContent = this.credit;
+        this.creditElem.classList.remove('carousel-hidden');
+      }
+      else {
+        this.creditElem.textContent = '';
+        this.creditElem.classList.add('carousel-hidden');
+      }
     }
   };
 
@@ -701,7 +876,8 @@
     const _ = this;
     this.index = index;
     this.owner = owner;
-    this.btn = h.mkel('a', { class: 'carousel-indicator', href: '#carousel-' + index });
+    this.btn = h.mkel('a', { class: 'carousel-indicator',
+                             href: '#carousel-' + index });
     this.btn.appendChild(h.mkel('span', { class: 'carousel-indicator-inner' }));
     this.btn.addEventListener('click', (e) => {
       e.preventDefault();

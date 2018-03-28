@@ -24,6 +24,12 @@ $carousel-indicator-size: 12px;
   }
 }
 
+.carousel-auto-height {
+  .carousel {
+    //
+  }
+}
+
 .carousel {
   overflow: hidden;
   position: relative;
@@ -32,6 +38,10 @@ $carousel-indicator-size: 12px;
 
   &.carousel-draggable {
     overflow-x: auto;
+  }
+
+  &-hidden {
+    display: none;
   }
 
   &-slider {
@@ -71,6 +81,30 @@ $carousel-indicator-size: 12px;
       * {
         margin: 0;
       }
+    }
+
+    img[data-carousel-src] {
+      display: block;
+    }
+
+    &-keep-img {
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+
+  &-photo-credit {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    font-size: smaller;
+    opacity: .6;
+
+    &::before {
+      content: 'Credit: ';
+      opacity: .6;
     }
   }
 
