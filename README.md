@@ -40,7 +40,7 @@ The outer most `div` element of the carousel that contain all carousel content
 | `data-carousel-indicators`       | Add indicators                               | No value |
 | `data-carousel-touch-threshold`  | x distance to swipe before transition starts. Can be either a fixed number (px) or in percent (%) | 100 or 50%      |
 | `data-carousel-rubberband-swipe` | Give a rubber band effect when swipeing.     | 1.5      |
-
+| `data-carousel-wrapper`          | CSS selector for the outer wrapper. Only used when `data-carousel-keep-img` and `data-carousel-auto-height` are used | .outer-wrapper |
 ---
 
 ### Carousel slider
@@ -65,6 +65,8 @@ This container is the wrapper for every item in the carousel.
 | Attribute                       | Description                                  | Example        |
 | ------------------------------- | -------------------------------------------- | -------------- |
 | `data-carousel-href`            | URL to goto when the item is clicked         | /internal/path |
+| `data-carousel-keep-img`        | Don't put the image as background, show the `<img>` tag instead | "(empty)" |
+| `data-carousel-auto-height`     | Only used when `data-carousel-keep-img` is set. Will auto-adjust the wrapper height accorning to the height of the `<img>`. This requires that `data-carousel-wrapper` is set on the **Carsousel wrapper** |
 
 ---
 
@@ -106,12 +108,14 @@ the default source attribute.
 | ------------------------------- | -------------------------------------------- | ---------------- |
 | `data-carousel-src`             | Default image src                            | /images/img1.jpg |
 | `data-carousel-mq-(n)`          | Alternative image sources. `(n)` is an arbitrary number which will be set to the media directive `@media (min-width: (n)px)`                            | `data-carousel-mq-376='larger-than-iphone6-image.jpg'` |
+| `data-carousel-photo-credit`    | Show photo credit                            | Robert Capa      |
+| `data-carousel-photo-credit-mq-(n)` | Like `data-carousel-mq-(n)` above but for the photo credit. This is only needed if multiple sources are used and `(n)` should then match `(n)` of `data-carousel-mq-(n)` | Another Photographer |
 
 ### The `Carousel` global object
 
-This object has one static property (`null` by default) that if set with a 
-function that function will be called when a slider item is clicked (if the 
-`data-carousel-href` attribute is used on the item). 
+This object has one static property (`null` by default) that if set with a
+function that function will be called when a slider item is clicked (if the
+`data-carousel-href` attribute is used on the item).
 
 ```js
 Carousel.clickBack = function(item) {

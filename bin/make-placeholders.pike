@@ -8,7 +8,7 @@
 */
 
 constant url = "https://placeholdit.imgix.net/~text";
-constant out = combine_path(__DIR__, '..', "images");
+constant out = combine_path(__DIR__, "..", "images");
 
 mapping params = ([
   "txtsize" : "45",

@@ -16,6 +16,8 @@ constant readme_md     = combine_path(__DIR__, "..", "README.md");
 constant examples_dir  = combine_path(__DIR__, "..", "examples");
 constant output_file   = combine_path(__DIR__, "..", "index.html");
 
+constant BREAK_AFTER = 0;
+
 int main(int argc, array(string) argv)
 {
   string tmpl        = Stdio.read_file(html_template);
@@ -38,6 +40,8 @@ int main(int argc, array(string) argv)
 
   out = "<div class='container intro'><div class='site-width'>" + out + "</div></div>";
 
+  int i = 0;
+
   foreach (glob("*.tmpl", sort(get_dir(examples_dir))), string file) {
     string part = Stdio.read_file(combine_path(examples_dir, file));
 
@@ -58,6 +62,12 @@ int main(int argc, array(string) argv)
     }
 
     out += part;
+
+    i += 1;
+
+    if (BREAK_AFTER && i == BREAK_AFTER) {
+      break;
+    }
   }
 
   tmpl = replace(tmpl, "<!-- content -->", out);
