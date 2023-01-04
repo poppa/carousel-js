@@ -1,3 +1,7 @@
+/*
+  Author: Pontus Östlund <https://github.com/poppa>
+*/
+
 // jshint esversion: 6
 
 (function(window, document) {

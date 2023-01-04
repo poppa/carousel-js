@@ -1,6 +1,8 @@
 /*
-  Author: Pontus Östlund <https://profiles.google.com/poppanator>
+  Author: Pontus Östlund <https://github.com/poppa>
 */
+
+@use 'sass:math';
 
 $site-padding: 3rem;
 $site-width:   1140px;
@@ -48,8 +50,8 @@ header {
   }
 
   .container {
-    padding-top: $site-padding/2;
-    padding-bottom: $site-padding/2;
+    padding-top: math.div($site-padding, 2);
+    padding-bottom: math.div($site-padding, 2);
   }
 
   .site-width {
@@ -68,11 +70,11 @@ header {
 
     a {
       display: inline-block;
-      padding: $site-padding/2;
-      transition: background .3s ease-out, color .3s ease-out;
+      padding: math.div($site-padding, 2);
+      transition: background-color .3s ease-out, color .3s ease-out;
 
       &:hover {
-        background: $header-bg;
+        background-color: $header-bg;
         color: $link-bg;
       }
     }
@@ -102,17 +104,17 @@ header {
 .container {
   position: relative;
   margin: 0 auto;
-  padding: $site-padding/2;
+  padding: math.div($site-padding, 2);
 
   @media screen and (min-width: 415px) {
     padding: $site-padding;
   }
 
   h2 {
-    margin-bottom: $site-padding/2;
+    margin-bottom: math.div($site-padding, 2);
 
     & + p {
-      margin-top: -($site-padding/2);
+      margin-top: -(math.div($site-padding, 2));
     }
   }
 
@@ -208,7 +210,7 @@ code {
 }
 
 pre {
-  padding: $site-padding/2;
+  padding: math.div($site-padding, 2);
   background: #232323;
   color: #ccc;
   overflow: auto;
@@ -228,7 +230,7 @@ th {
 }
 
 th, td {
-  padding: $site-padding/3;
+  padding: math.div($site-padding, 3);
   vertical-align: top;
 }
 
@@ -264,7 +266,7 @@ hr {
 ul[role=tablist] {
   list-style: none;
   padding: 0;
-  padding-left: $site-padding/2;
+  padding-left: math.div($site-padding, 2);
   border-bottom: 1px solid $header-bg;
 
   li {
@@ -279,12 +281,12 @@ ul[role=tablist] {
       border-bottom: 0;
       border-bottom-left-radius: 0;
       border-bottom-right-radius: 0;
-      padding: $site-padding/2 $site-padding;
+      padding: math.div($site-padding, 2) $site-padding;
       cursor: pointer;
       font-weight: bold;
 
       @media screen and (max-width: 375px) {
-        padding: $site-padding/3 $site-padding/2;
+        padding: math.div($site-padding, 2) math.div($site-padding, 2);
       }
     }
 

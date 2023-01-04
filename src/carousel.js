@@ -1,5 +1,5 @@
 /*
-  Author: Pontus Östlund <https://profiles.google.com/poppanator>
+  Author: Pontus Östlund <https://github.com/poppa>
 */
 
 // jshint esversion: 6, undef: true, unused: true

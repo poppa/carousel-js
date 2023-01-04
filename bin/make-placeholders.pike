@@ -1,6 +1,6 @@
 #!/usr/bin/env pike
 /*
-  Author: Pontus Östlund <https://profiles.google.com/poppanator>
+  Author: Pontus Östlund <https://github.com/poppa>
 
   Permission to copy, modify, and distribute this source for any legal
   purpose granted as long as my name is still attached to it. More

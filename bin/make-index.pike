@@ -1,6 +1,6 @@
 #!/usr/bin/env pike
 /*
-  Author: Pontus Östlund <https://profiles.google.com/poppanator>
+  Author: Pontus Östlund <https://github.com/poppa>
 
   Permission to copy, modify, and distribute this source for any legal
   purpose granted as long as my name is still attached to it. More
@@ -26,7 +26,7 @@ int main(int argc, array(string) argv)
   string out         = "";
 
   foreach (parts, Token part) {
-    string html = Tools.Markdown.parse(part->md, md_args);
+    string html = Parser.Markdown.parse(part->md, md_args);
 
     if (part->type == "catch(table)") {
       html = "<div class='scrollable'>" + html + "</div>";
